@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FANTACANIS — Storico</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --gold-dim: #7A6230;
+  --bg: #0D0D0F;
+  --bg2: #141417;
+  --bg3: #1C1C21;
+  --bg4: #242429;
+  --border: rgba(201,168,76,0.18);
+  --border2: rgba(201,168,76,0.35);
+  --text: #F0EDE6;
+  --text2: #A8A49A;
+  --text3: #5C5A54;
+  --red: #E05252;
+  --green: #52C87A;
+  --blue: #5294E0;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(13,13,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:0;height:56px;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--gold);margin-right:2rem;text-decoration:none;white-space:nowrap;}
+.nav-links{display:flex;gap:0;overflow-x:auto;flex:1;}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;padding:0 14px;height:56px;display:flex;align-items:center;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* HERO */
+.hero{max-width:1200px;margin:0 auto;padding:5rem 2rem 3rem;}
+.hero-label{font-size:11px;letter-spacing:4px;color:var(--gold-dim);text-transform:uppercase;margin-bottom:1rem;}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,10vw,120px);line-height:0.9;color:var(--text);letter-spacing:2px;margin-bottom:1.5rem;}
+.hero-title span{color:var(--gold);}
+.hero-sub{font-size:15px;color:var(--text2);max-width:500px;line-height:1.7;}
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;margin-top:3rem;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.hero-stat{background:var(--bg2);padding:1.5rem;text-align:center;}
+.hero-stat .num{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--gold);line-height:1;}
+.hero-stat .lbl{font-size:11px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-top:4px;}
+
+/* SECTIONS */
+.section{max-width:1200px;margin:0 auto;padding:3rem 2rem;}
+.section-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:2rem;border-bottom:1px solid var(--border);padding-bottom:1rem;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:var(--text);}
+.section-sub{font-size:12px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;}
+.divider{height:1px;background:linear-gradient(90deg,var(--gold-dim) 0%,transparent 100%);margin:0 2rem;}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;transition:border-color .2s;}
+.card:hover{border-color:var(--border2);}
+
+/* TABS */
+.tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:2rem;width:fit-content;}
+.tab-btn{background:transparent;border:none;color:var(--text2);padding:8px 20px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.tab-btn.active,.tab-btn:hover{background:var(--bg3);color:var(--gold);}
+
+/* TABLES */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{text-align:left;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);padding:10px 12px;border-bottom:1px solid var(--border);}
+td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:14px;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(201,168,76,0.04);}
+.rank{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text3);}
+.rank-1{color:var(--gold);}
+.rank-2{color:#B8B8B8;}
+.rank-3{color:#CD7F32;}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:0.5px;}
+.badge-gold{background:rgba(201,168,76,0.15);color:var(--gold);}
+.badge-win{background:rgba(82,200,122,0.15);color:var(--green);}
+.badge-lose{background:rgba(224,82,82,0.12);color:var(--red);}
+
+/* PALMARES GRID */
+.palmares-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;}
+.palmares-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;position:relative;overflow:hidden;transition:all .25s;}
+.palmares-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),transparent);}
+.palmares-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.palmares-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--text);margin-bottom:1rem;}
+.palmares-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.palmares-row:last-child{border-bottom:none;}
+.palmares-label{font-size:12px;color:var(--text2);}
+.palmares-count{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);line-height:1;}
+.trophy-icons{display:flex;gap:3px;margin-top:4px;}
+.trophy{width:14px;height:14px;background:var(--gold);border-radius:2px;opacity:0.8;}
+
+/* STAGIONI */
+.season-selector{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2rem;}
+.season-btn{background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text2);padding:6px 14px;font-size:12px;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.season-btn.active,.season-btn:hover{background:rgba(201,168,76,0.15);border-color:var(--border2);color:var(--gold);}
+.season-content{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+@media(max-width:700px){.season-content{grid-template-columns:1fr;}}
+.season-card-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:1rem;}
+
+/* CLASSIFICA ALL TIME */
+.at-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+@media(max-width:700px){.at-grid{grid-template-columns:1fr;}}
+
+/* CURIOSITA */
+.curiosita-list{display:flex;flex-direction:column;gap:1rem;}
+.curiosita-item{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1rem 1.25rem;font-size:14px;color:var(--text2);line-height:1.7;}
+.curiosita-item strong{color:var(--text);font-weight:600;}
+
+/* STAT EXPLORER */
+.explorer-controls{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;align-items:center;}
+.explorer-controls select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:8px 14px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.explorer-controls select:focus{outline:none;border-color:var(--gold);}
+.stat-result{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-top:1rem;}
+.stat-big{font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--gold);line-height:1;}
+.stat-desc{font-size:13px;color:var(--text2);margin-top:8px;}
+
+/* CHART CONTAINERS */
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;}
+.chart-title{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:1.5rem;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--text3);font-size:12px;letter-spacing:1px;margin-top:4rem;}
+
+/* SEARCH */
+.search-wrap{position:relative;max-width:320px;}
+.search-wrap input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:8px 14px;font-size:13px;font-family:'DM Sans',sans-serif;}
+.search-wrap input:focus{outline:none;border-color:var(--gold);}
+
+/* SQUADRE PAGE */
+.squadre-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
+.squadra-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;transition:all .25s;cursor:pointer;}
+.squadra-card:hover{border-color:var(--border2);transform:translateY(-3px);}
+.squadra-avatar{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);margin:0 auto 1rem;background:var(--bg3);}
+.squadra-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
+.squadra-pres{font-size:12px;color:var(--text3);}
+.squadra-active{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:4px;}
+.squadra-inactive{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--text3);margin-right:4px;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:2rem;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;position:relative;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;line-height:1;}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--gold);margin-bottom:1.5rem;}
+
+/* PAGE SYSTEM */
+.page{display:none;}
+.page.active{display:block;}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .hero-title{font-size:60px;}
+  .season-content{grid-template-columns:1fr;}
+  .at-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#" onclick="showPage('home')">FANTACANIS</a>
+    <div class="nav-links">
+      <a href="#" onclick="showPage('home')" id="nav-home" class="active">Home</a>
+      <a href="#" onclick="showPage('dettaglio')" id="nav-dettaglio">Dettaglio</a>
+      <a href="#" onclick="showPage('albo')" id="nav-albo">Albo d'Oro</a>
+      <a href="#" onclick="showPage('palmares')" id="nav-palmares">Palmares</a>
+      <a href="#" onclick="showPage('classifica')" id="nav-classifica">Classifica All Time</a>
+      <a href="#" onclick="showPage('statistiche')" id="nav-statistiche">Statistiche</a>
+      <a href="#" onclick="showPage('curiosita')" id="nav-curiosita">Curiosità</a>
+      <a href="#" onclick="showPage('squadre')" id="nav-squadre">Squadre</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ======================== HOME ======================== -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <p class="hero-label">Storico Ufficiale · Dal 2001</p>
+    <h1 class="hero-title">FANTA<span>CANIS</span></h1>
+    <p class="hero-sub">L'archivio completo di 24 stagioni di storia, record, trofei e sfide leggendarie.</p>
+    <div class="hero-stats" id="hero-stats-container"></div>
+  </div>
+  <div class="divider"></div>
+  <div class="section">
+    <div class="section-header"><span class="section-title">Ultimi Campioni</span><span class="section-sub">Le ultime 5 stagioni</span></div>
+    <div id="last-champions-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;"></div>
+  </div>
+  <div class="divider"></div>
+  <div class="section">
+    <div class="section-header"><span class="section-title">Andamento Punti</span><span class="section-sub">Squadre attuali · era 4 gironi</span></div>
+    <div class="chart-box">
+      <div class="chart-title">Punti per stagione · Dal 2013/2014</div>
+      <div style="position:relative;width:100%;height:350px;"><canvas id="chartAndamento" role="img" aria-label="Andamento punti squadre nel campionato per stagione dal 2013/2014"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== DETTAGLIO ======================== -->
+<div id="page-dettaglio" class="page">
+  <div class="section">
+    <div class="section-header"><span class="section-title">Dettaglio Stagioni</span></div>
+    <div class="season-selector" id="season-selector-btns"></div>
+    <div class="season-content" id="season-detail-content"></div>
+  </div>
+</div>
+
+<!-- ======================== ALBO D'ORO ======================== -->
+<div id="page-albo" class="page">
+  <div class="section">
+    <div class="section-header"><span class="section-title">Albo d'Oro</span></div>
+    <div class="tabs" style="margin-bottom:2rem;">
+      <button class="tab-btn active" onclick="switchAlboTab('campionato',this)">Campionato</button>
+      <button class="tab-btn" onclick="switchAlboTab('coppa',this)">Coppa Italia</button>
+      <button class="tab-btn" onclick="switchAlboTab('supercoppa',this)">Supercoppa</button>
+      <button class="tab-btn" onclick="switchAlboTab('superlega',this)">Superlega</button>
+    </div>
+    <div id="albo-table-container"></div>
+  </div>
+</div>
+
+<!-- ======================== PALMARES ======================== -->
+<div id="page-palmares" class="page">
+  <div class="section">
+    <div class="section-header"><span class="section-title">Palmares</span><span class="section-sub">Trofei per squadra</span></div>
+    <div class="palmares-grid" id="palmares-grid-container"></div>
+  </div>
+  <div class="section">
+    <div class="section-header"><span class="section-title">Grafico Trofei</span></div>
+    <div class="chart-box">
+      <div style="position:relative;width:100%;height:320px;"><canvas id="chartTrofei" role="img" aria-label="Trofei vinti per squadra nel Fantacanis"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== CLASSIFICA ALL TIME ======================== -->
+<div id="page-classifica" class="page">
+  <div class="section">
+    <div class="section-header"><span class="section-title">Classifica All Time</span></div>
+    <div class="at-grid">
+      <div>
+        <div class="card">
+          <div class="chart-title">Per punti totali</div>
+          <div class="table-wrap" id="at-punti-table"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="chart-title">Per media punti (era 4 gironi)</div>
+          <div class="table-wrap" id="at-media-table"></div>
+        </div>
+        <div class="card" style="margin-top:1rem;">
+          <div class="chart-title">Media punti · grafico</div>
+          <div style="position:relative;width:100%;height:280px;"><canvas id="chartMedia" role="img" aria-label="Media punti per squadra era 4 gironi"></canvas></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem;" class="chart-box">
+      <div class="chart-title">Punti totali storici · confronto</div>
+      <div style="position:relative;width:100%;height:320px;"><canvas id="chartPuntiTotali" role="img" aria-label="Punti totali storici per squadra"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== STATISTICHE ======================== -->
+<div id="page-statistiche" class="page">
+  <div class="section">
+    <div class="section-header"><span class="section-title">Statistiche Avanzate</span></div>
+
+    <div class="section-header" style="margin-top:1rem;"><span class="section-title" style="font-size:20px;">Esplora per Squadra</span></div>
+    <div class="explorer-controls">
+      <select id="explorer-squadra" onchange="updateExplorer()"></select>
+      <select id="explorer-metrica" onchange="updateExplorer()">
+        <option value="pos1">Scudetti vinti (1° posto)</option>
+        <option value="pos2">Secondi posti</option>
+        <option value="pos3">Terzi posti</option>
+        <option value="top3">Podi totali (top 3)</option>
+        <option value="pos8">Ultimi posti</option>
+        <option value="max_pt">Punti massimi in una stagione</option>
+        <option value="min_pt">Punti minimi in una stagione</option>
+        <option value="media_pt">Media punti storici</option>
+        <option value="tot_trofei">Trofei totali</option>
+        <option value="coppe_italia">Coppe Italia</option>
+        <option value="supercoppe">Supercoppe</option>
+        <option value="superleghe">Superleghe</option>
+      </select>
+    </div>
+    <div id="explorer-result" class="stat-result" style="display:none;"></div>
+
+    <div class="section-header" style="margin-top:2.5rem;"><span class="section-title" style="font-size:20px;">Classifiche Posizionali</span><span class="section-sub">Quante volte ogni squadra è arrivata in ogni posizione</span></div>
+    <div class="card">
+      <div class="table-wrap" id="pos-table-container"></div>
+    </div>
+
+    <div class="section-header" style="margin-top:2.5rem;"><span class="section-title" style="font-size:20px;">Record di Campionato</span></div>
+    <div id="records-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;"></div>
+
+    <div class="section-header" style="margin-top:2.5rem;"><span class="section-title" style="font-size:20px;">Distribuzione Posizioni</span></div>
+    <div class="chart-box">
+      <div class="chart-title">Distribuzione posizioni per squadra (squadre attuali)</div>
+      <div style="position:relative;width:100%;height:380px;"><canvas id="chartDistPos" role="img" aria-label="Distribuzione delle posizioni di campionato per squadra"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== CURIOSITA ======================== -->
+<div id="page-curiosita" class="page">
+  <div class="section">
+    <div class="section-header"><span class="section-title">Curiosità</span></div>
+    <div class="curiosita-list" id="curiosita-list"></div>
+  </div>
+</div>
+
+<!-- ======================== SQUADRE ======================== -->
+<div id="page-squadre" class="page">
+  <div class="section">
+    <div class="section-header"><span class="section-title">Squadre</span></div>
+    <div class="squadre-grid" id="squadre-grid-container"></div>
+  </div>
+</div>
+
+<!-- MODAL SQUADRA -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content">
+    <button class="modal-close" onclick="document.getElementById('modal-overlay').classList.remove('open')">✕</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<footer>
+  <p>FANTACANIS — Storico Ufficiale · Dal 2001/2002 · <a href="https://leghe.fantacalcio.it/fantacanis" style="color:var(--gold-dim);text-decoration:none;">Lega Attiva</a></p>
+</footer>
+
+<script>
+const DB = {"squadre":[{"id":"SUPER_EAGLES","nome":"SUPER EAGLES","presidente":"Enrico","attiva":true},{"id":"SUPER_SAYAN","nome":"SUPER SAYAN","presidente":"Luca","attiva":true},{"id":"NEDERLANDSE_LEEUWEN","nome":"NEDERLANDSE LEEUWEN","presidente":"Ivan","attiva":true},{"id":"REAL_TORINO","nome":"REAL TORINO","presidente":"Andre","attiva":true},{"id":"LONGOBARDA","nome":"LONGOBARDA","presidente":"Dide","attiva":true},{"id":"SMASHING_PUMPKINS","nome":"SMASHING PUMPKINS","presidente":"Andre B.","attiva":true},{"id":"LOKOMOTIV_MOSCONI","nome":"LOKOMOTIV MOSCONI","presidente":"Adolfo","attiva":true},{"id":"SPARTA_TARAS","nome":"SPARTA TARAS","presidente":"Fabri","attiva":true},{"id":"US_CATANZARO","nome":"US CATANZARO","presidente":null,"attiva":false},{"id":"ATLETICO_GIUVENTUS","nome":"ATLETICO GIUVENTUS","presidente":null,"attiva":false},{"id":"ASR_1927","nome":"ASR 1927","presidente":null,"attiva":false},{"id":"REAL_GAMBUN","nome":"REAL GAMBUN","presidente":null,"attiva":false},{"id":"MERONI_FC","nome":"MERONI FC","presidente":null,"attiva":false},{"id":"ATLETICO_POLONIO","nome":"ATLETICO POLONIO FC","presidente":null,"attiva":false},{"id":"MOFO","nome":"MOFO","presidente":null,"attiva":false},{"id":"SUPER_BOYS","nome":"SUPER BOYS","presidente":null,"attiva":false},{"id":"ALHAMBRA","nome":"ALHAMBRA","presidente":null,"attiva":false},{"id":"GOLIA81","nome":"GOLIA 81","presidente":null,"attiva":false},{"id":"NON_PENSO_FC","nome":"NON PENSO FC","presidente":null,"attiva":false},{"id":"FARTS_FC","nome":"FARTS FC","presidente":null,"attiva":false}],"classifiche":[{"stagione":"2025/2026","pos":1,"squadra":"LOKOMOTIV_MOSCONI","punti":66},{"stagione":"2025/2026","pos":2,"squadra":"NEDERLANDSE_LEEUWEN","punti":49},{"stagione":"2025/2026","pos":3,"squadra":"SUPER_EAGLES","punti":47},{"stagione":"2025/2026","pos":4,"squadra":"SUPER_SAYAN","punti":41},{"stagione":"2025/2026","pos":5,"squadra":"REAL_TORINO","punti":30},{"stagione":"2025/2026","pos":6,"squadra":"LONGOBARDA","punti":28},{"stagione":"2025/2026","pos":7,"squadra":"SMASHING_PUMPKINS","punti":26},{"stagione":"2025/2026","pos":8,"squadra":"SPARTA_TARAS","punti":26},{"stagione":"2024/2025","pos":1,"squadra":"SUPER_EAGLES","punti":55},{"stagione":"2024/2025","pos":2,"squadra":"LONGOBARDA","punti":44},{"stagione":"2024/2025","pos":3,"squadra":"REAL_TORINO","punti":41},{"stagione":"2024/2025","pos":4,"squadra":"LOKOMOTIV_MOSCONI","punti":40},{"stagione":"2024/2025","pos":5,"squadra":"SUPER_SAYAN","punti":37},{"stagione":"2024/2025","pos":6,"squadra":"SMASHING_PUMPKINS","punti":35},{"stagione":"2024/2025","pos":7,"squadra":"NEDERLANDSE_LEEUWEN","punti":29},{"stagione":"2024/2025","pos":8,"squadra":"SPARTA_TARAS","punti":28},{"stagione":"2023/2024","pos":1,"squadra":"REAL_TORINO","punti":45,"note":"Spareggio scudetto vs NEDERLANDSE_LEEUWEN 3-1"},{"stagione":"2023/2024","pos":2,"squadra":"NEDERLANDSE_LEEUWEN","punti":45},{"stagione":"2023/2024","pos":3,"squadra":"LONGOBARDA","punti":44},{"stagione":"2023/2024","pos":4,"squadra":"SUPER_EAGLES","punti":42},{"stagione":"2023/2024","pos":5,"squadra":"SPARTA_TARAS","punti":38},{"stagione":"2023/2024","pos":6,"squadra":"LOKOMOTIV_MOSCONI","punti":34},{"stagione":"2023/2024","pos":7,"squadra":"SUPER_SAYAN","punti":28},{"stagione":"2023/2024","pos":8,"squadra":"SMASHING_PUMPKINS","punti":24},{"stagione":"2022/2023","pos":1,"squadra":"SUPER_EAGLES","punti":56},{"stagione":"2022/2023","pos":2,"squadra":"NEDERLANDSE_LEEUWEN","punti":54},{"stagione":"2022/2023","pos":3,"squadra":"SUPER_SAYAN","punti":40},{"stagione":"2022/2023","pos":4,"squadra":"SPARTA_TARAS","punti":37},{"stagione":"2022/2023","pos":5,"squadra":"SMASHING_PUMPKINS","punti":36},{"stagione":"2022/2023","pos":6,"squadra":"LONGOBARDA","punti":34},{"stagione":"2022/2023","pos":7,"squadra":"REAL_TORINO","punti":33},{"stagione":"2022/2023","pos":8,"squadra":"LOKOMOTIV_MOSCONI","punti":21},{"stagione":"2021/2022","pos":1,"squadra":"LOKOMOTIV_MOSCONI","punti":51},{"stagione":"2021/2022","pos":2,"squadra":"SUPER_EAGLES","punti":45},{"stagione":"2021/2022","pos":3,"squadra":"NEDERLANDSE_LEEUWEN","punti":44},{"stagione":"2021/2022","pos":4,"squadra":"REAL_TORINO","punti":41},{"stagione":"2021/2022","pos":5,"squadra":"SUPER_SAYAN","punti":41},{"stagione":"2021/2022","pos":6,"squadra":"LONGOBARDA","punti":32},{"stagione":"2021/2022","pos":7,"squadra":"SMASHING_PUMPKINS","punti":32},{"stagione":"2021/2022","pos":8,"squadra":"SPARTA_TARAS","punti":24},{"stagione":"2020/2021","pos":1,"squadra":"SUPER_EAGLES","punti":50},{"stagione":"2020/2021","pos":2,"squadra":"NEDERLANDSE_LEEUWEN","punti":49},{"stagione":"2020/2021","pos":3,"squadra":"LOKOMOTIV_MOSCONI","punti":42},{"stagione":"2020/2021","pos":4,"squadra":"SPARTA_TARAS","punti":39},{"stagione":"2020/2021","pos":5,"squadra":"REAL_TORINO","punti":38},{"stagione":"2020/2021","pos":6,"squadra":"LONGOBARDA","punti":33},{"stagione":"2020/2021","pos":7,"squadra":"SUPER_SAYAN","punti":32},{"stagione":"2020/2021","pos":8,"squadra":"SMASHING_PUMPKINS","punti":27},{"stagione":"2019/2020","pos":1,"squadra":"US_CATANZARO","punti":55},{"stagione":"2019/2020","pos":2,"squadra":"SUPER_SAYAN","punti":51},{"stagione":"2019/2020","pos":3,"squadra":"SUPER_EAGLES","punti":45},{"stagione":"2019/2020","pos":4,"squadra":"LOKOMOTIV_MOSCONI","punti":37},{"stagione":"2019/2020","pos":5,"squadra":"ASR_1927","punti":37},{"stagione":"2019/2020","pos":6,"squadra":"NEDERLANDSE_LEEUWEN","punti":35},{"stagione":"2019/2020","pos":7,"squadra":"REAL_TORINO","punti":26},{"stagione":"2019/2020","pos":8,"squadra":"LONGOBARDA","punti":25},{"stagione":"2018/2019","pos":1,"squadra":"ASR_1927","punti":56},{"stagione":"2018/2019","pos":2,"squadra":"US_CATANZARO","punti":49},{"stagione":"2018/2019","pos":3,"squadra":"NEDERLANDSE_LEEUWEN","punti":44},{"stagione":"2018/2019","pos":4,"squadra":"REAL_TORINO","punti":39},{"stagione":"2018/2019","pos":5,"squadra":"SUPER_EAGLES","punti":36},{"stagione":"2018/2019","pos":6,"squadra":"SUPER_SAYAN","punti":35},{"stagione":"2018/2019","pos":7,"squadra":"ATLETICO_GIUVENTUS","punti":26},{"stagione":"2018/2019","pos":8,"squadra":"LONGOBARDA","punti":21},{"stagione":"2017/2018","pos":1,"squadra":"SUPER_SAYAN","punti":52},{"stagione":"2017/2018","pos":2,"squadra":"SUPER_EAGLES","punti":48},{"stagione":"2017/2018","pos":3,"squadra":"NEDERLANDSE_LEEUWEN","punti":46},{"stagione":"2017/2018","pos":4,"squadra":"ATLETICO_GIUVENTUS","punti":38},{"stagione":"2017/2018","pos":5,"squadra":"REAL_TORINO","punti":37},{"stagione":"2017/2018","pos":6,"squadra":"US_CATANZARO","punti":33},{"stagione":"2017/2018","pos":7,"squadra":"LONGOBARDA","punti":31},{"stagione":"2017/2018","pos":8,"squadra":"ASR_1927","punti":22},{"stagione":"2016/2017","pos":1,"squadra":"ATLETICO_GIUVENTUS","punti":48},{"stagione":"2016/2017","pos":2,"squadra":"SUPER_SAYAN","punti":47},{"stagione":"2016/2017","pos":3,"squadra":"NEDERLANDSE_LEEUWEN","punti":46},{"stagione":"2016/2017","pos":4,"squadra":"LONGOBARDA","punti":43},{"stagione":"2016/2017","pos":5,"squadra":"US_CATANZARO","punti":37},{"stagione":"2016/2017","pos":6,"squadra":"REAL_TORINO","punti":32},{"stagione":"2016/2017","pos":7,"squadra":"SUPER_EAGLES","punti":31},{"stagione":"2016/2017","pos":8,"squadra":"ATLETICO_POLONIO","punti":27},{"stagione":"2015/2016","pos":1,"squadra":"SUPER_SAYAN","punti":46,"note":"Spareggio scudetto vs NEDERLANDSE_LEEUWEN 2-1"},{"stagione":"2015/2016","pos":2,"squadra":"NEDERLANDSE_LEEUWEN","punti":46},{"stagione":"2015/2016","pos":3,"squadra":"US_CATANZARO","punti":40},{"stagione":"2015/2016","pos":4,"squadra":"ATLETICO_POLONIO","punti":39},{"stagione":"2015/2016","pos":5,"squadra":"LONGOBARDA","punti":39},{"stagione":"2015/2016","pos":6,"squadra":"SUPER_EAGLES","punti":36},{"stagione":"2015/2016","pos":7,"squadra":"REAL_TORINO","punti":36},{"stagione":"2015/2016","pos":8,"squadra":"ATLETICO_GIUVENTUS","punti":33},{"stagione":"2014/2015","pos":1,"squadra":"SUPER_SAYAN","punti":46},{"stagione":"2014/2015","pos":2,"squadra":"REAL_TORINO","punti":45},{"stagione":"2014/2015","pos":3,"squadra":"LONGOBARDA","punti":45},{"stagione":"2014/2015","pos":4,"squadra":"SUPER_EAGLES","punti":43},{"stagione":"2014/2015","pos":5,"squadra":"US_CATANZARO","punti":41},{"stagione":"2014/2015","pos":6,"squadra":"MERONI_FC","punti":34},{"stagione":"2014/2015","pos":7,"squadra":"ATLETICO_GIUVENTUS","punti":31},{"stagione":"2014/2015","pos":8,"squadra":"NEDERLANDSE_LEEUWEN","punti":26},{"stagione":"2013/2014","pos":1,"squadra":"ATLETICO_GIUVENTUS","punti":53},{"stagione":"2013/2014","pos":2,"squadra":"REAL_TORINO","punti":52},{"stagione":"2013/2014","pos":3,"squadra":"SUPER_EAGLES","punti":43},{"stagione":"2013/2014","pos":4,"squadra":"LONGOBARDA","punti":42},{"stagione":"2013/2014","pos":5,"squadra":"US_CATANZARO","punti":38},{"stagione":"2013/2014","pos":6,"squadra":"SUPER_SAYAN","punti":31},{"stagione":"2013/2014","pos":7,"squadra":"NEDERLANDSE_LEEUWEN","punti":26},{"stagione":"2013/2014","pos":8,"squadra":"MERONI_FC","punti":25},{"stagione":"2012/2013","pos":1,"squadra":"SUPER_EAGLES","punti":48},{"stagione":"2012/2013","pos":2,"squadra":"US_CATANZARO","punti":36},{"stagione":"2012/2013","pos":3,"squadra":"REAL_TORINO","punti":34},{"stagione":"2012/2013","pos":4,"squadra":"LONGOBARDA","punti":28},{"stagione":"2012/2013","pos":5,"squadra":"NEDERLANDSE_LEEUWEN","punti":27},{"stagione":"2012/2013","pos":6,"squadra":"ATLETICO_GIUVENTUS","punti":25},{"stagione":"2012/2013","pos":7,"squadra":"MERONI_FC","punti":20},{"stagione":"2012/2013","pos":8,"squadra":"SUPER_SAYAN","punti":18},{"stagione":"2011/2012","pos":1,"squadra":"REAL_TORINO","punti":36},{"stagione":"2011/2012","pos":2,"squadra":"SUPER_SAYAN","punti":30},{"stagione":"2011/2012","pos":3,"squadra":"SUPER_EAGLES","punti":29},{"stagione":"2011/2012","pos":4,"squadra":"US_CATANZARO","punti":27},{"stagione":"2011/2012","pos":5,"squadra":"ATLETICO_GIUVENTUS","punti":26},{"stagione":"2011/2012","pos":6,"squadra":"NEDERLANDSE_LEEUWEN","punti":24},{"stagione":"2011/2012","pos":7,"squadra":"LONGOBARDA","punti":24},{"stagione":"2011/2012","pos":8,"squadra":"MERONI_FC","punti":24},{"stagione":"2010/2011","pos":1,"squadra":"US_CATANZARO","punti":47},{"stagione":"2010/2011","pos":2,"squadra":"SUPER_SAYAN","punti":40},{"stagione":"2010/2011","pos":3,"squadra":"SUPER_EAGLES","punti":31},{"stagione":"2010/2011","pos":4,"squadra":"REAL_TORINO","punti":29},{"stagione":"2010/2011","pos":5,"squadra":"REAL_GAMBUN","punti":27},{"stagione":"2010/2011","pos":6,"squadra":"ATLETICO_GIUVENTUS","punti":25},{"stagione":"2010/2011","pos":7,"squadra":"LONGOBARDA","punti":22},{"stagione":"2010/2011","pos":8,"squadra":"NEDERLANDSE_LEEUWEN","punti":18},{"stagione":"2009/2010","pos":1,"squadra":"REAL_TORINO","punti":38},{"stagione":"2009/2010","pos":2,"squadra":"SUPER_SAYAN","punti":36},{"stagione":"2009/2010","pos":3,"squadra":"NEDERLANDSE_LEEUWEN","punti":35},{"stagione":"2009/2010","pos":4,"squadra":"LONGOBARDA","punti":33},{"stagione":"2009/2010","pos":5,"squadra":"SUPER_EAGLES","punti":30},{"stagione":"2009/2010","pos":6,"squadra":"REAL_GAMBUN","punti":26},{"stagione":"2009/2010","pos":7,"squadra":"US_CATANZARO","punti":25},{"stagione":"2009/2010","pos":8,"squadra":"ATLETICO_GIUVENTUS","punti":17},{"stagione":"2008/2009","pos":1,"squadra":"SUPER_SAYAN","punti":38},{"stagione":"2008/2009","pos":2,"squadra":"ATLETICO_GIUVENTUS","punti":34},{"stagione":"2008/2009","pos":3,"squadra":"NEDERLANDSE_LEEUWEN","punti":33},{"stagione":"2008/2009","pos":4,"squadra":"US_CATANZARO","punti":30},{"stagione":"2008/2009","pos":5,"squadra":"LONGOBARDA","punti":30},{"stagione":"2008/2009","pos":6,"squadra":"SUPER_EAGLES","punti":27},{"stagione":"2008/2009","pos":7,"squadra":"REAL_TORINO","punti":26},{"stagione":"2008/2009","pos":8,"squadra":"REAL_GAMBUN","punti":13},{"stagione":"2007/2008","pos":1,"squadra":"US_CATANZARO","punti":38},{"stagione":"2007/2008","pos":2,"squadra":"NEDERLANDSE_LEEUWEN","punti":37},{"stagione":"2007/2008","pos":3,"squadra":"SUPER_SAYAN","punti":31},{"stagione":"2007/2008","pos":4,"squadra":"SUPER_EAGLES","punti":30},{"stagione":"2007/2008","pos":5,"squadra":"REAL_TORINO","punti":25},{"stagione":"2007/2008","pos":6,"squadra":"LONGOBARDA","punti":24},{"stagione":"2007/2008","pos":7,"squadra":"REAL_GAMBUN","punti":24},{"stagione":"2007/2008","pos":8,"squadra":"SMASHING_PUMPKINS","punti":20},{"stagione":"2006/2007","pos":1,"squadra":"LONGOBARDA","punti":null},{"stagione":"2006/2007","pos":2,"squadra":"NEDERLANDSE_LEEUWEN","punti":null},{"stagione":"2006/2007","pos":3,"squadra":"SUPER_SAYAN","punti":null},{"stagione":"2006/2007","pos":4,"squadra":"GOLIA81","punti":null},{"stagione":"2006/2007","pos":5,"squadra":"SUPER_EAGLES","punti":null},{"stagione":"2006/2007","pos":6,"squadra":"REAL_GAMBUN","punti":null},{"stagione":"2006/2007","pos":7,"squadra":"FARTS_FC","punti":null},{"stagione":"2006/2007","pos":8,"squadra":"REAL_TORINO","punti":null},{"stagione":"2004/2005","pos":1,"squadra":"REAL_GAMBUN","punti":null},{"stagione":"2004/2005","pos":2,"squadra":"SMASHING_PUMPKINS","punti":null},{"stagione":"2004/2005","pos":3,"squadra":"LONGOBARDA","punti":null},{"stagione":"2004/2005","pos":4,"squadra":"FARTS_FC","punti":null},{"stagione":"2004/2005","pos":5,"squadra":"REAL_TORINO","punti":null},{"stagione":"2004/2005","pos":6,"squadra":"NEDERLANDSE_LEEUWEN","punti":null},{"stagione":"2004/2005","pos":7,"squadra":"SUPER_EAGLES","punti":null},{"stagione":"2004/2005","pos":8,"squadra":"SUPER_SAYAN","punti":null},{"stagione":"2003/2004","pos":1,"squadra":"SMASHING_PUMPKINS","punti":38},{"stagione":"2003/2004","pos":2,"squadra":"LONGOBARDA","punti":33},{"stagione":"2003/2004","pos":3,"squadra":"SUPER_SAYAN","punti":29},{"stagione":"2003/2004","pos":4,"squadra":"NEDERLANDSE_LEEUWEN","punti":23},{"stagione":"2003/2004","pos":5,"squadra":"REAL_TORINO","punti":20},{"stagione":"2003/2004","pos":6,"squadra":"SUPER_BOYS","punti":18},{"stagione":"2003/2004","pos":7,"squadra":"SUPER_EAGLES","punti":15},{"stagione":"2002/2003","pos":1,"squadra":"GOLIA81","punti":32},{"stagione":"2002/2003","pos":2,"squadra":"SUPER_SAYAN","punti":28},{"stagione":"2002/2003","pos":3,"squadra":"MOFO","punti":28},{"stagione":"2002/2003","pos":4,"squadra":"NEDERLANDSE_LEEUWEN","punti":28},{"stagione":"2002/2003","pos":5,"squadra":"SUPER_EAGLES","punti":25},{"stagione":"2002/2003","pos":6,"squadra":"SUPER_BOYS","punti":24},{"stagione":"2002/2003","pos":7,"squadra":"ALHAMBRA","punti":24},{"stagione":"2002/2003","pos":8,"squadra":"SMASHING_PUMPKINS","punti":23},{"stagione":"2001/2002","pos":1,"squadra":"SUPER_SAYAN","punti":30},{"stagione":"2001/2002","pos":2,"squadra":"SUPER_EAGLES","punti":29},{"stagione":"2001/2002","pos":3,"squadra":"MOFO","punti":25},{"stagione":"2001/2002","pos":4,"squadra":"LONGOBARDA","punti":25},{"stagione":"2001/2002","pos":5,"squadra":"NEDERLANDSE_LEEUWEN","punti":16},{"stagione":"2001/2002","pos":6,"squadra":"ALHAMBRA","punti":16},{"stagione":"2001/2002","pos":7,"squadra":"NON_PENSO_FC","punti":13},{"stagione":"2001/2002","pos":8,"squadra":"SMASHING_PUMPKINS","punti":4}],"risultati_coppe":[{"stagione":"2025/2026","competizione":"Coppa Italia","squadra_1":"NEDERLANDSE_LEEUWEN","squadra_2":"SUPER_SAYAN","risultato":"1-0","vincitore":"NEDERLANDSE_LEEUWEN"},{"stagione":"2025/2026","competizione":"Supercoppa","squadra_1":"NEDERLANDSE_LEEUWEN","squadra_2":"LOKOMOTIV_MOSCONI","risultato":"1-0","vincitore":"NEDERLANDSE_LEEUWEN"},{"stagione":"2025/2026","competizione":"Superlega","apertura_vincitore":"LOKOMOTIV_MOSCONI","apertura_punti":38,"clausura_vincitore":"LOKOMOTIV_MOSCONI","clausura_punti":28,"finale_squadra_1":null,"finale_squadra_2":null,"finale_risultato":null,"vincitore":"LOKOMOTIV_MOSCONI"},{"stagione":"2024/2025","competizione":"Coppa Italia","squadra_1":"REAL_TORINO","squadra_2":"SUPER_SAYAN","risultato":"1-0","vincitore":"REAL_TORINO"},{"stagione":"2024/2025","competizione":"Supercoppa","squadra_1":"SUPER_EAGLES","squadra_2":"REAL_TORINO","risultato":"2-1","vincitore":"SUPER_EAGLES"},{"stagione":"2024/2025","competizione":"Superlega","apertura_vincitore":"SUPER_EAGLES","apertura_punti":29,"clausura_vincitore":"SUPER_EAGLES","clausura_punti":26,"finale_squadra_1":null,"finale_squadra_2":null,"finale_risultato":null,"vincitore":"SUPER_EAGLES"},{"stagione":"2023/2024","competizione":"Coppa Italia","squadra_1":"LOKOMOTIV_MOSCONI","squadra_2":"SPARTA_TARAS","risultato":"1-0","vincitore":"LOKOMOTIV_MOSCONI"},{"stagione":"2023/2024","competizione":"Supercoppa","squadra_1":"REAL_TORINO","squadra_2":"LOKOMOTIV_MOSCONI","risultato":"1-1 (5-1 dts)","vincitore":"REAL_TORINO"},{"stagione":"2023/2024","competizione":"Superlega","apertura_vincitore":"NEDERLANDSE_LEEUWEN","apertura_punti":25,"clausura_vincitore":"SUPER_EAGLES","clausura_punti":25,"finale_squadra_1":"SUPER_EAGLES","finale_squadra_2":"NEDERLANDSE_LEEUWEN","finale_risultato":"1-0","vincitore":"SUPER_EAGLES"},{"stagione":"2022/2023","competizione":"Coppa Italia","squadra_1":"SUPER_EAGLES","squadra_2":"LONGOBARDA","risultato":"4-2","vincitore":"SUPER_EAGLES"},{"stagione":"2022/2023","competizione":"Supercoppa","squadra_1":"SUPER_EAGLES","squadra_2":"LONGOBARDA","risultato":"0-0 (2-0 supp.)","vincitore":"SUPER_EAGLES"},{"stagione":"2022/2023","competizione":"Superlega","apertura_vincitore":"SUPER_EAGLES","apertura_punti":27,"clausura_vincitore":"SUPER_EAGLES","clausura_punti":29,"finale_squadra_1":null,"finale_squadra_2":null,"finale_risultato":null,"vincitore":"SUPER_EAGLES"},{"stagione":"2021/2022","competizione":"Coppa Italia","squadra_1":"REAL_TORINO","squadra_2":"NEDERLANDSE_LEEUWEN","risultato":"6-1","vincitore":"REAL_TORINO"},{"stagione":"2021/2022","competizione":"Supercoppa","squadra_1":"REAL_TORINO","squadra_2":"LOKOMOTIV_MOSCONI","risultato":"2-1","vincitore":"REAL_TORINO"},{"stagione":"2021/2022","competizione":"Superlega","apertura_vincitore":"LOKOMOTIV_MOSCONI","apertura_punti":25,"clausura_vincitore":"SUPER_EAGLES","clausura_punti":26,"finale_squadra_1":"SUPER_EAGLES","finale_squadra_2":"LOKOMOTIV_MOSCONI","finale_risultato":"1-0","vincitore":"SUPER_EAGLES"},{"stagione":"2020/2021","competizione":"Coppa Italia","squadra_1":"SUPER_EAGLES","squadra_2":"SUPER_SAYAN","risultato":"3-2","vincitore":"SUPER_EAGLES"},{"stagione":"2020/2021","competizione":"Supercoppa","squadra_1":"SUPER_SAYAN","squadra_2":"SUPER_EAGLES","risultato":"1-0","vincitore":"SUPER_SAYAN"},{"stagione":"2020/2021","competizione":"Superlega","apertura_vincitore":"NEDERLANDSE_LEEUWEN","apertura_punti":26,"clausura_vincitore":"LONGOBARDA","clausura_punti":27,"finale_squadra_1":"LONGOBARDA","finale_squadra_2":"NEDERLANDSE_LEEUWEN","finale_risultato":"1-0","vincitore":"LONGOBARDA"},{"stagione":"2019/2020","competizione":"Coppa Italia","squadra_1":"LOKOMOTIV_MOSCONI","squadra_2":"NEDERLANDSE_LEEUWEN","risultato":"2-1","vincitore":"LOKOMOTIV_MOSCONI"},{"stagione":"2019/2020","competizione":"Supercoppa","squadra_1":"LOKOMOTIV_MOSCONI","squadra_2":"US_CATANZARO","risultato":"2-0","vincitore":"LOKOMOTIV_MOSCONI"},{"stagione":"2018/2019","competizione":"Coppa Italia","squadra_1":"SUPER_EAGLES","squadra_2":"ATLETICO_GIUVENTUS","risultato":"2-0","vincitore":"SUPER_EAGLES"},{"stagione":"2018/2019","competizione":"Supercoppa","squadra_1":"SUPER_EAGLES","squadra_2":"ASR_1927","risultato":"2-0","vincitore":"SUPER_EAGLES"},{"stagione":"2017/2018","competizione":"Coppa Italia","squadra_1":"NEDERLANDSE_LEEUWEN","squadra_2":"LONGOBARDA","risultato":"2-0","vincitore":"NEDERLANDSE_LEEUWEN"},{"stagione":"2017/2018","competizione":"Supercoppa","squadra_1":"SUPER_SAYAN","squadra_2":"NEDERLANDSE_LEEUWEN","risultato":"2-0","vincitore":"SUPER_SAYAN"},{"stagione":"2016/2017","competizione":"Coppa Italia","squadra_1":"SUPER_SAYAN","squadra_2":"REAL_TORINO","risultato":"2-0","vincitore":"SUPER_SAYAN"},{"stagione":"2016/2017","competizione":"Supercoppa","squadra_1":"SUPER_SAYAN","squadra_2":"ATLETICO_GIUVENTUS","risultato":"4-3","vincitore":"SUPER_SAYAN"},{"stagione":"2015/2016","competizione":"Coppa Italia","squadra_1":"SUPER_EAGLES","squadra_2":"SUPER_SAYAN","risultato":"1-1 (6-5 dcr)","vincitore":"SUPER_EAGLES"},{"stagione":"2015/2016","competizione":"Supercoppa","squadra_1":"SUPER_SAYAN","squadra_2":"SUPER_EAGLES","risultato":"5-2","vincitore":"SUPER_SAYAN"},{"stagione":"2014/2015","competizione":"Coppa Italia","squadra_1":"SUPER_SAYAN","squadra_2":"LONGOBARDA","risultato":"5-4","vincitore":"SUPER_SAYAN"},{"stagione":"2014/2015","competizione":"Supercoppa","squadra_1":"LONGOBARDA","squadra_2":"SUPER_SAYAN","risultato":"3-0","vincitore":"LONGOBARDA"},{"stagione":"2013/2014","competizione":"Coppa Italia","squadra_1":"ATLETICO_GIUVENTUS","squadra_2":"SUPER_SAYAN","risultato":"4-2","vincitore":"ATLETICO_GIUVENTUS"},{"stagione":"2013/2014","competizione":"Supercoppa","squadra_1":"SUPER_SAYAN","squadra_2":"ATLETICO_GIUVENTUS","risultato":"3-0","vincitore":"SUPER_SAYAN"},{"stagione":"2012/2013","competizione":"Coppa Italia","squadra_1":"US_CATANZARO","squadra_2":"LONGOBARDA","risultato":"2-1 / 3-1","vincitore":"US_CATANZARO"},{"stagione":"2012/2013","competizione":"Supercoppa","squadra_1":"US_CATANZARO","squadra_2":"SUPER_EAGLES","risultato":"3-0","vincitore":"US_CATANZARO"},{"stagione":"2011/2012","competizione":"Coppa Italia","squadra_1":"US_CATANZARO","squadra_2":"SUPER_EAGLES","risultato":"0-0 / 2-0","vincitore":"US_CATANZARO"},{"stagione":"2011/2012","competizione":"Supercoppa","squadra_1":"US_CATANZARO","squadra_2":"REAL_TORINO","risultato":"3-2","vincitore":"US_CATANZARO"},{"stagione":"2010/2011","competizione":"Coppa Italia","squadra_1":"SUPER_EAGLES","squadra_2":"REAL_GAMBUN","risultato":"2-0 / 4-3","vincitore":"SUPER_EAGLES"},{"stagione":"2010/2011","competizione":"Supercoppa","squadra_1":"SUPER_EAGLES","squadra_2":"US_CATANZARO","risultato":"4-0","vincitore":"SUPER_EAGLES"},{"stagione":"2009/2010","competizione":"Coppa Italia","squadra_1":"REAL_TORINO","squadra_2":"ATLETICO_GIUVENTUS","risultato":"2-1 / 3-0","vincitore":"REAL_TORINO"},{"stagione":"2009/2010","competizione":"Supercoppa","squadra_1":"ATLETICO_GIUVENTUS","squadra_2":"REAL_TORINO","risultato":"3-1","vincitore":"ATLETICO_GIUVENTUS"},{"stagione":"2008/2009","competizione":"Coppa Italia","squadra_1":"REAL_TORINO","squadra_2":"SUPER_SAYAN","risultato":"2-1 / 5-5","vincitore":"REAL_TORINO"},{"stagione":"2008/2009","competizione":"Supercoppa","squadra_1":"REAL_TORINO","squadra_2":"SUPER_SAYAN","risultato":"1-1 (2-0 Sup.)","vincitore":"REAL_TORINO"},{"stagione":"2007/2008","competizione":"Coppa Italia","squadra_1":"SUPER_EAGLES","squadra_2":"US_CATANZARO","risultato":"1-1 / 2-1","vincitore":"SUPER_EAGLES"},{"stagione":"2007/2008","competizione":"Supercoppa","squadra_1":"SUPER_EAGLES","squadra_2":"US_CATANZARO","risultato":"1-0","vincitore":"SUPER_EAGLES"},{"stagione":"2006/2007","competizione":"Coppa Italia","squadra_1":"SUPER_EAGLES","squadra_2":"LONGOBARDA","risultato":"1-1 / 4-1","vincitore":"SUPER_EAGLES"},{"stagione":"2006/2007","competizione":"Supercoppa","squadra_1":"LONGOBARDA","squadra_2":"SUPER_EAGLES","risultato":"0-0 (10-9 rig.)","vincitore":"LONGOBARDA"},{"stagione":"2004/2005","competizione":"Coppa Italia","squadra_1":"SUPER_SAYAN","squadra_2":"SUPER_EAGLES","risultato":"2-0","vincitore":"SUPER_SAYAN"},{"stagione":"2004/2005","competizione":"Supercoppa","squadra_1":"REAL_GAMBUN","squadra_2":"SUPER_SAYAN","risultato":"1-0","vincitore":"REAL_GAMBUN"},{"stagione":"2003/2004","competizione":"Coppa Italia","squadra_1":"SUPER_EAGLES","squadra_2":"SMASHING_PUMPKINS","risultato":"0-0 (4-1 rig.)","vincitore":"SUPER_EAGLES"},{"stagione":"2003/2004","competizione":"Supercoppa","squadra_1":"SMASHING_PUMPKINS","squadra_2":"SUPER_EAGLES","risultato":"2-1","vincitore":"SMASHING_PUMPKINS"},{"stagione":"2002/2003","competizione":"Coppa Italia","squadra_1":"SUPER_BOYS","squadra_2":"NEDERLANDSE_LEEUWEN","risultato":"4-3","vincitore":"SUPER_BOYS"}],"trofei":[{"stagione":"2025/2026","competizione":"Campionato","vincitore":"LOKOMOTIV_MOSCONI"},{"stagione":"2025/2026","competizione":"Coppa Italia","vincitore":"NEDERLANDSE_LEEUWEN"},{"stagione":"2025/2026","competizione":"Supercoppa","vincitore":"NEDERLANDSE_LEEUWEN"},{"stagione":"2025/2026","competizione":"Superlega","vincitore":"LOKOMOTIV_MOSCONI"},{"stagione":"2024/2025","competizione":"Campionato","vincitore":"SUPER_EAGLES"},{"stagione":"2024/2025","competizione":"Coppa Italia","vincitore":"REAL_TORINO"},{"stagione":"2024/2025","competizione":"Supercoppa","vincitore":"SUPER_EAGLES"},{"stagione":"2024/2025","competizione":"Superlega","vincitore":"SUPER_EAGLES"},{"stagione":"2023/2024","competizione":"Campionato","vincitore":"REAL_TORINO"},{"stagione":"2023/2024","competizione":"Coppa Italia","vincitore":"LOKOMOTIV_MOSCONI"},{"stagione":"2023/2024","competizione":"Supercoppa","vincitore":"REAL_TORINO"},{"stagione":"2023/2024","competizione":"Superlega","vincitore":"SUPER_EAGLES"},{"stagione":"2022/2023","competizione":"Campionato","vincitore":"SUPER_EAGLES"},{"stagione":"2022/2023","competizione":"Coppa Italia","vincitore":"SUPER_EAGLES"},{"stagione":"2022/2023","competizione":"Supercoppa","vincitore":"SUPER_EAGLES"},{"stagione":"2022/2023","competizione":"Superlega","vincitore":"SUPER_EAGLES"},{"stagione":"2021/2022","competizione":"Campionato","vincitore":"LOKOMOTIV_MOSCONI"},{"stagione":"2021/2022","competizione":"Coppa Italia","vincitore":"REAL_TORINO"},{"stagione":"2021/2022","competizione":"Supercoppa","vincitore":"REAL_TORINO"},{"stagione":"2021/2022","competizione":"Superlega","vincitore":"SUPER_EAGLES"},{"stagione":"2020/2021","competizione":"Campionato","vincitore":"SUPER_EAGLES"},{"stagione":"2020/2021","competizione":"Coppa Italia","vincitore":"SUPER_EAGLES"},{"stagione":"2020/2021","competizione":"Supercoppa","vincitore":"SUPER_SAYAN"},{"stagione":"2020/2021","competizione":"Superlega","vincitore":"LONGOBARDA"},{"stagione":"2019/2020","competizione":"Campionato","vincitore":"US_CATANZARO"},{"stagione":"2019/2020","competizione":"Coppa Italia","vincitore":"LOKOMOTIV_MOSCONI"},{"stagione":"2019/2020","competizione":"Supercoppa","vincitore":"LOKOMOTIV_MOSCONI"},{"stagione":"2018/2019","competizione":"Campionato","vincitore":"ASR_1927"},{"stagione":"2018/2019","competizione":"Coppa Italia","vincitore":"SUPER_EAGLES"},{"stagione":"2018/2019","competizione":"Supercoppa","vincitore":"SUPER_EAGLES"},{"stagione":"2017/2018","competizione":"Campionato","vincitore":"SUPER_SAYAN"},{"stagione":"2017/2018","competizione":"Coppa Italia","vincitore":"NEDERLANDSE_LEEUWEN"},{"stagione":"2017/2018","competizione":"Supercoppa","vincitore":"SUPER_SAYAN"},{"stagione":"2016/2017","competizione":"Campionato","vincitore":"ATLETICO_GIUVENTUS"},{"stagione":"2016/2017","competizione":"Coppa Italia","vincitore":"SUPER_SAYAN"},{"stagione":"2016/2017","competizione":"Supercoppa","vincitore":"SUPER_SAYAN"},{"stagione":"2015/2016","competizione":"Campionato","vincitore":"SUPER_SAYAN"},{"stagione":"2015/2016","competizione":"Coppa Italia","vincitore":"SUPER_EAGLES"},{"stagione":"2015/2016","competizione":"Supercoppa","vincitore":"SUPER_SAYAN"},{"stagione":"2014/2015","competizione":"Campionato","vincitore":"SUPER_SAYAN"},{"stagione":"2014/2015","competizione":"Coppa Italia","vincitore":"SUPER_SAYAN"},{"stagione":"2014/2015","competizione":"Supercoppa","vincitore":"LONGOBARDA"},{"stagione":"2013/2014","competizione":"Campionato","vincitore":"ATLETICO_GIUVENTUS"},{"stagione":"2013/2014","competizione":"Coppa Italia","vincitore":"ATLETICO_GIUVENTUS"},{"stagione":"2013/2014","competizione":"Supercoppa","vincitore":"SUPER_SAYAN"},{"stagione":"2012/2013","competizione":"Campionato","vincitore":"SUPER_EAGLES"},{"stagione":"2012/2013","competizione":"Coppa Italia","vincitore":"US_CATANZARO"},{"stagione":"2012/2013","competizione":"Supercoppa","vincitore":"US_CATANZARO"},{"stagione":"2011/2012","competizione":"Campionato","vincitore":"REAL_TORINO"},{"stagione":"2011/2012","competizione":"Coppa Italia","vincitore":"US_CATANZARO"},{"stagione":"2011/2012","competizione":"Supercoppa","vincitore":"US_CATANZARO"},{"stagione":"2010/2011","competizione":"Campionato","vincitore":"US_CATANZARO"},{"stagione":"2010/2011","competizione":"Coppa Italia","vincitore":"SUPER_EAGLES"},{"stagione":"2010/2011","competizione":"Supercoppa","vincitore":"SUPER_EAGLES"},{"stagione":"2009/2010","competizione":"Campionato","vincitore":"REAL_TORINO"},{"stagione":"2009/2010","competizione":"Coppa Italia","vincitore":"REAL_TORINO"},{"stagione":"2009/2010","competizione":"Supercoppa","vincitore":"ATLETICO_GIUVENTUS"},{"stagione":"2008/2009","competizione":"Campionato","vincitore":"SUPER_SAYAN"},{"stagione":"2008/2009","competizione":"Coppa Italia","vincitore":"REAL_TORINO"},{"stagione":"2008/2009","competizione":"Supercoppa","vincitore":"REAL_TORINO"},{"stagione":"2007/2008","competizione":"Campionato","vincitore":"US_CATANZARO"},{"stagione":"2007/2008","competizione":"Coppa Italia","vincitore":"SUPER_EAGLES"},{"stagione":"2007/2008","competizione":"Supercoppa","vincitore":"SUPER_EAGLES"},{"stagione":"2006/2007","competizione":"Campionato","vincitore":"LONGOBARDA"},{"stagione":"2006/2007","competizione":"Coppa Italia","vincitore":"SUPER_EAGLES"},{"stagione":"2006/2007","competizione":"Supercoppa","vincitore":"LONGOBARDA"},{"stagione":"2004/2005","competizione":"Campionato","vincitore":"REAL_GAMBUN"},{"stagione":"2004/2005","competizione":"Coppa Italia","vincitore":"SUPER_SAYAN"},{"stagione":"2004/2005","competizione":"Supercoppa","vincitore":"REAL_GAMBUN"},{"stagione":"2003/2004","competizione":"Campionato","vincitore":"SMASHING_PUMPKINS"},{"stagione":"2003/2004","competizione":"Coppa Italia","vincitore":"SUPER_EAGLES"},{"stagione":"2003/2004","competizione":"Supercoppa","vincitore":"SMASHING_PUMPKINS"},{"stagione":"2002/2003","competizione":"Campionato","vincitore":"GOLIA81"},{"stagione":"2002/2003","competizione":"Coppa Italia","vincitore":"SUPER_BOYS"},{"stagione":"2001/2002","competizione":"Campionato","vincitore":"SUPER_SAYAN"}],"classifica_alltime":{"per_punti_totali":[{"pos":1,"squadra":"SUPER_EAGLES","punti_totali":841,"campionati":22},{"pos":2,"squadra":"SUPER_SAYAN","punti_totali":807,"campionati":22},{"pos":3,"squadra":"NEDERLANDSE_LEEUWEN","punti_totali":780,"campionati":22},{"pos":4,"squadra":"REAL_TORINO","punti_totali":703,"campionati":20},{"pos":5,"squadra":"LONGOBARDA","punti_totali":680,"campionati":21},{"pos":6,"squadra":"US_CATANZARO","punti_totali":496,"campionati":13},{"pos":7,"squadra":"ATLETICO_GIUVENTUS","punti_totali":356,"campionati":11},{"pos":8,"squadra":"LOKOMOTIV_MOSCONI","punti_totali":291,"campionati":7},{"pos":9,"squadra":"SMASHING_PUMPKINS","punti_totali":265,"campionati":11},{"pos":10,"squadra":"SPARTA_TARAS","punti_totali":192,"campionati":6},{"pos":11,"squadra":"ASR_1927","punti_totali":115,"campionati":3},{"pos":12,"squadra":"MERONI_FC","punti_totali":103,"campionati":4},{"pos":13,"squadra":"REAL_GAMBUN","punti_totali":90,"campionati":6},{"pos":14,"squadra":"ATLETICO_POLONIO","punti_totali":66,"campionati":2},{"pos":15,"squadra":"MOFO","punti_totali":53,"campionati":2},{"pos":16,"squadra":"SUPER_BOYS","punti_totali":42,"campionati":2},{"pos":17,"squadra":"ALHAMBRA","punti_totali":40,"campionati":2},{"pos":18,"squadra":"GOLIA81","punti_totali":32,"campionati":2},{"pos":19,"squadra":"NON_PENSO_FC","punti_totali":13,"campionati":1},{"pos":20,"squadra":"FARTS_FC","punti_totali":null,"campionati":2}],"per_media_punti":[{"pos":1,"squadra":"SUPER_EAGLES","media":44.4,"punti":578,"campionati":13},{"pos":2,"squadra":"LOKOMOTIV_MOSCONI","media":41.5,"punti":291,"campionati":7},{"pos":3,"squadra":"NEDERLANDSE_LEEUWEN","media":41.4,"punti":539,"campionati":13},{"pos":4,"squadra":"SUPER_SAYAN","media":40.4,"punti":525,"campionati":13},{"pos":5,"squadra":"REAL_TORINO","media":38.0,"punti":495,"campionati":13},{"pos":6,"squadra":"LONGOBARDA","media":35.4,"punti":461,"campionati":13},{"pos":7,"squadra":"SPARTA_TARAS","media":32.0,"punti":192,"campionati":6},{"pos":8,"squadra":"SMASHING_PUMPKINS","media":30.0,"punti":180,"campionati":6}]}};
+
+// ─── UTILITIES ───────────────────────────────────────────
+function sqName(id){const s=DB.squadre.find(x=>x.id===id);return s?s.nome:id;}
+function trofeiSq(id){const t={};['Campionato','Coppa Italia','Supercoppa','Superlega'].forEach(c=>{t[c]=DB.trofei.filter(x=>x.vincitore===id&&x.competizione===c).length;});t.totale=Object.values(t).reduce((a,b)=>a+b,0);return t;}
+function posCount(id,pos){return DB.classifiche.filter(x=>x.squadra===id&&x.pos===pos).length;}
+
+const SQUAD_COLORS={
+  SUPER_EAGLES:'#E05252',SUPER_SAYAN:'#5294E0',NEDERLANDSE_LEEUWEN:'#52C87A',
+  REAL_TORINO:'#C9A84C',LONGOBARDA:'#9B59B6',SMASHING_PUMPKINS:'#E67E22',
+  LOKOMOTIV_MOSCONI:'#1ABC9C',SPARTA_TARAS:'#E91E63',US_CATANZARO:'#607D8B',
+  ATLETICO_GIUVENTUS:'#795548',ASR_1927:'#FF5722',REAL_GAMBUN:'#009688',
+  default:'#888'
+};
+function sqColor(id){return SQUAD_COLORS[id]||SQUAD_COLORS.default;}
+
+// ─── PAGE SYSTEM ─────────────────────────────────────────
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const nav=document.getElementById('nav-'+id);
+  if(nav)nav.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ─── HOME ────────────────────────────────────────────────
+function buildHome(){
+  const stagioni=[...new Set(DB.classifiche.map(x=>x.stagione))].sort().reverse();
+  const totalTrofei=DB.trofei.length;
+  const totalStagioni=stagioni.filter(s=>s!=='2005/2006').length;
+  const recordPt=Math.max(...DB.classifiche.filter(x=>x.punti).map(x=>x.punti));
+  const squadreAttive=DB.squadre.filter(x=>x.attiva).length;
+
+  document.getElementById('hero-stats-container').innerHTML=`
+    <div class="hero-stat"><div class="num">${totalStagioni}</div><div class="lbl">Stagioni</div></div>
+    <div class="hero-stat"><div class="num">${totalTrofei}</div><div class="lbl">Trofei Assegnati</div></div>
+    <div class="hero-stat"><div class="num">${squadreAttive}</div><div class="lbl">Squadre Attive</div></div>
+    <div class="hero-stat"><div class="num">${recordPt}</div><div class="lbl">Record Punti</div></div>
+    <div class="hero-stat"><div class="num">20</div><div class="lbl">Squadre Storiche</div></div>
+  `;
+
+  const last5=stagioni.slice(0,5);
+  const champGrid=document.getElementById('last-champions-grid');
+  champGrid.innerHTML=last5.map(s=>{
+    const first=DB.classifiche.find(x=>x.stagione===s&&x.pos===1);
+    const trofei=DB.trofei.filter(x=>x.stagione===s);
+    const coppa=trofei.find(x=>x.competizione==='Coppa Italia');
+    const sup=trofei.find(x=>x.competizione==='Supercoppa');
+    const sl=trofei.find(x=>x.competizione==='Superlega');
+    return `<div class="card" style="border-top:3px solid var(--gold);">
+      <div style="font-size:12px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:8px;">${s}</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);margin-bottom:12px;">🏆 ${first?sqName(first.squadra):'—'} ${first&&first.punti?'('+first.punti+'pt)':''}</div>
+      <div style="font-size:12px;color:var(--text2);">${coppa?'<span class="badge badge-gold">CI: '+sqName(coppa.vincitore)+'</span> ':''} ${sup?'<span class="badge" style="background:rgba(255,255,255,.07);color:var(--text2)">SC: '+sqName(sup.vincitore)+'</span>':''}</div>
+    </div>`;
+  }).join('');
+
+  // Chart andamento
+  const era4stages=['2013/2014','2014/2015','2015/2016','2016/2017','2017/2018','2018/2019','2019/2020','2020/2021','2021/2022','2022/2023','2023/2024','2024/2025','2025/2026'];
+  const attive=DB.squadre.filter(x=>x.attiva).map(x=>x.id);
+  const datasets=attive.map(id=>({
+    label:sqName(id),
+    data:era4stages.map(s=>{const r=DB.classifiche.find(x=>x.stagione===s&&x.squadra===id);return r?r.punti:null;}),
+    borderColor:sqColor(id),backgroundColor:'transparent',
+    pointRadius:4,pointHoverRadius:6,borderWidth:2,tension:0.3,spanGaps:false
+  }));
+  new Chart(document.getElementById('chartAndamento'),{
+    type:'line',data:{labels:era4stages.map(s=>s.slice(5)),datasets},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
+      scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#5C5A54',font:{size:11}}},
+              y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#5C5A54'},min:15}}}
+  });
+}
+
+// ─── DETTAGLIO ───────────────────────────────────────────
+let currentSeason=null;
+function buildDettaglio(){
+  const stagioni=[...new Set(DB.classifiche.map(x=>x.stagione))].sort().reverse();
+  const btn=document.getElementById('season-selector-btns');
+  btn.innerHTML=stagioni.map(s=>`<button class="season-btn${s===stagioni[0]?' active':''}" onclick="selectSeason('${s}',this)">${s}</button>`).join('');
+  selectSeason(stagioni[0],null,true);
+}
+function selectSeason(s,el,first=false){
+  currentSeason=s;
+  if(!first){document.querySelectorAll('.season-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');}
+  const cl=DB.classifiche.filter(x=>x.stagione===s).sort((a,b)=>a.pos-b.pos);
+  const coppe=DB.risultati_coppe.filter(x=>x.stagione===s);
+  const coppa=coppe.find(x=>x.competizione==='Coppa Italia');
+  const superc=coppe.find(x=>x.competizione==='Supercoppa');
+  const superlega=coppe.find(x=>x.competizione==='Superlega');
+
+  const rankClass=p=>p===1?'rank rank-1':p===2?'rank rank-2':p===3?'rank rank-3':'rank';
+  const campHtml=`<div class="card">
+    <div class="season-card-title">Campionato</div>
+    <div class="table-wrap"><table>
+      <tr><th>Pos</th><th>Squadra</th><th>Pt</th></tr>
+      ${cl.map(r=>`<tr><td class="${rankClass(r.pos)}">${r.pos}</td><td>${sqName(r.squadra)}${r.note?` <span style="font-size:11px;color:var(--gold-dim)">(spareggio)</span>`:''}</td><td><strong>${r.punti??'nd'}</strong></td></tr>`).join('')}
+    </table></div></div>`;
+
+  let coppeHtml=`<div class="card">
+    <div class="season-card-title">Coppe & Trofei</div>`;
+  if(coppa)coppeHtml+=`<div style="margin-bottom:12px;"><div style="font-size:11px;letter-spacing:1px;color:var(--text3);margin-bottom:4px;">COPPA ITALIA</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;">${sqName(coppa.squadra_1)} <span style="color:var(--text3)">vs</span> ${sqName(coppa.squadra_2)}</span>
+      <span class="badge badge-gold">${coppa.risultato}</span>
+    </div>
+    <div style="font-size:12px;color:var(--green);margin-top:4px;">🏆 ${sqName(coppa.vincitore)}</div></div>`;
+  if(superc)coppeHtml+=`<div style="margin-bottom:12px;border-top:1px solid var(--border);padding-top:12px;"><div style="font-size:11px;letter-spacing:1px;color:var(--text3);margin-bottom:4px;">SUPERCOPPA</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;">${sqName(superc.squadra_1)} <span style="color:var(--text3)">vs</span> ${sqName(superc.squadra_2)}</span>
+      <span class="badge badge-gold">${superc.risultato}</span>
+    </div>
+    <div style="font-size:12px;color:var(--green);margin-top:4px;">🏆 ${sqName(superc.vincitore)}</div></div>`;
+  if(superlega)coppeHtml+=`<div style="border-top:1px solid var(--border);padding-top:12px;"><div style="font-size:11px;letter-spacing:1px;color:var(--text3);margin-bottom:4px;">SUPERLEGA</div>
+    <div style="font-size:13px;">Apertura: <strong>${sqName(superlega.apertura_vincitore)}</strong> (${superlega.apertura_punti}pt)</div>
+    <div style="font-size:13px;margin-top:4px;">Clausura: <strong>${sqName(superlega.clausura_vincitore)}</strong> (${superlega.clausura_punti}pt)</div>
+    ${superlega.finale_risultato?`<div style="font-size:13px;margin-top:4px;">Finale: ${sqName(superlega.finale_squadra_1)} vs ${sqName(superlega.finale_squadra_2)} <span class="badge badge-gold">${superlega.finale_risultato}</span></div>`:''}
+    <div style="font-size:12px;color:var(--green);margin-top:4px;">🏆 ${sqName(superlega.vincitore)}</div></div>`;
+  if(!coppa&&!superc&&!superlega)coppeHtml+=`<div style="color:var(--text3);font-size:13px;">Dati coppe non disponibili</div>`;
+  coppeHtml+=`</div>`;
+
+  document.getElementById('season-detail-content').innerHTML=campHtml+coppeHtml;
+}
+
+// ─── ALBO ────────────────────────────────────────────────
+let currentAlboTab='campionato';
+function buildAlbo(){renderAlboTable('campionato');}
+function switchAlboTab(tab,el){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderAlboTable(tab);
+}
+function renderAlboTable(tab){
+  const compMap={campionato:'Campionato',coppa:'Coppa Italia',supercoppa:'Supercoppa',superlega:'Superlega'};
+  const comp=compMap[tab];
+  const stagioni=[...new Set(DB.trofei.map(x=>x.stagione))].sort().reverse();
+  const rows=stagioni.map(s=>{
+    const t=DB.trofei.find(x=>x.stagione===s&&x.competizione===comp);
+    if(!t)return null;
+    const cl=DB.classifiche.find(x=>x.stagione===s&&x.pos===1);
+    const pt=cl&&cl.punti?cl.punti+'pt':'nd';
+    return `<tr><td style="color:var(--text3);font-size:13px;">${s}</td>
+      <td><strong style="color:var(--gold)">${sqName(t.vincitore)}</strong></td>
+      ${comp==='Campionato'?`<td style="font-size:13px;color:var(--text2)">${pt}</td>`:''}
+    </tr>`;
+  }).filter(Boolean);
+  document.getElementById('albo-table-container').innerHTML=`<div class="table-wrap"><table>
+    <tr><th>Stagione</th><th>Vincitore</th>${comp==='Campionato'?'<th>Punti</th>':''}</tr>
+    ${rows.join('')}
+  </table></div>`;
+}
+
+// ─── PALMARES ────────────────────────────────────────────
+function buildPalmares(){
+  const squads=DB.squadre.filter(x=>{const t=trofeiSq(x.id);return t.totale>0;}).sort((a,b)=>trofeiSq(b.id).totale-trofeiSq(a.id).totale);
+  const grid=document.getElementById('palmares-grid-container');
+  grid.innerHTML=squads.map(sq=>{
+    const t=trofeiSq(sq.id);
+    const rows=[
+      ['🏆 Scudetti',t['Campionato']],['🥇 Coppa Italia',t['Coppa Italia']],
+      ['⭐ Supercoppa',t['Supercoppa']],['⚡ Superlega',t['Superlega']]
+    ].filter(r=>r[1]>0);
+    return `<div class="palmares-card">
+      <div class="palmares-name">${sq.nome}</div>
+      ${rows.map(r=>`<div class="palmares-row">
+        <span class="palmares-label">${r[0]}</span>
+        <span class="palmares-count">${r[1]}</span>
+      </div>`).join('')}
+      <div style="margin-top:12px;font-size:11px;color:var(--text3);">TOTALE: <strong style="color:var(--gold)">${t.totale}</strong> trofei</div>
+    </div>`;
+  }).join('');
+
+  // Chart trofei
+  const top8=squads.slice(0,8);
+  const labels=top8.map(x=>x.nome.split(' ').slice(0,2).join(' '));
+  const scudetti=top8.map(x=>trofeiSq(x.id)['Campionato']);
+  const coppe=top8.map(x=>trofeiSq(x.id)['Coppa Italia']);
+  const superc=top8.map(x=>trofeiSq(x.id)['Supercoppa']);
+  const superl=top8.map(x=>trofeiSq(x.id)['Superlega']);
+  new Chart(document.getElementById('chartTrofei'),{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'Scudetti',data:scudetti,backgroundColor:'#C9A84C',borderRadius:3},
+      {label:'Coppa Italia',data:coppe,backgroundColor:'#5294E0',borderRadius:3},
+      {label:'Supercoppa',data:superc,backgroundColor:'#52C87A',borderRadius:3},
+      {label:'Superlega',data:superl,backgroundColor:'#9B59B6',borderRadius:3}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#A8A49A',font:{size:11}}}},
+      scales:{x:{stacked:true,grid:{display:false},ticks:{color:'#5C5A54',font:{size:10}}},
+              y:{stacked:true,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#5C5A54'}}}}
+  });
+}
+
+// ─── CLASSIFICA ALL TIME ──────────────────────────────────
+function buildClassifica(){
+  const pt=DB.classifica_alltime.per_punti_totali;
+  const med=DB.classifica_alltime.per_media_punti;
+  const rc=p=>p===1?'rank rank-1':p===2?'rank rank-2':p===3?'rank rank-3':'rank';
+  document.getElementById('at-punti-table').innerHTML=`<table>
+    <tr><th>#</th><th>Squadra</th><th>Pt</th><th>Camp.</th></tr>
+    ${pt.map(r=>`<tr><td class="${rc(r.pos)}">${r.pos}</td><td>${sqName(r.squadra)}</td><td><strong>${r.punti_totali??'nd'}</strong></td><td style="color:var(--text3)">${r.campionati}</td></tr>`).join('')}
+  </table>`;
+  document.getElementById('at-media-table').innerHTML=`<table>
+    <tr><th>#</th><th>Squadra</th><th>Media</th></tr>
+    ${med.map(r=>`<tr><td class="${rc(r.pos)}">${r.pos}</td><td>${sqName(r.squadra)}</td><td><strong style="color:var(--gold)">${r.media.toFixed(1)}</strong></td></tr>`).join('')}
+  </table>`;
+
+  new Chart(document.getElementById('chartMedia'),{
+    type:'bar',
+    data:{labels:med.map(r=>sqName(r.squadra).split(' ').slice(0,2).join(' ')),
+      datasets:[{data:med.map(r=>r.media),backgroundColor:med.map(r=>sqColor(r.squadra)),borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#5C5A54'},min:25},
+              y:{grid:{display:false},ticks:{color:'#A8A49A',font:{size:11}}}}}
+  });
+
+  const top10=pt.slice(0,10).filter(x=>x.punti_totali);
+  new Chart(document.getElementById('chartPuntiTotali'),{
+    type:'bar',
+    data:{labels:top10.map(r=>sqName(r.squadra).split(' ').slice(0,2).join(' ')),
+      datasets:[{data:top10.map(r=>r.punti_totali),backgroundColor:top10.map(r=>sqColor(r.squadra)),borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{color:'#5C5A54',font:{size:10}}},
+              y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#5C5A54'}}}}
+  });
+}
+
+// ─── STATISTICHE ─────────────────────────────────────────
+function buildStatistiche(){
+  const sel=document.getElementById('explorer-squadra');
+  if(sel.options.length===0){
+    DB.squadre.forEach(sq=>{const o=document.createElement('option');o.value=sq.id;o.textContent=sq.nome;sel.appendChild(o);});
+  }
+  updateExplorer();
+  buildPosTable();
+  buildRecords();
+  buildDistChart();
+}
+
+function updateExplorer(){
+  const sqId=document.getElementById('explorer-squadra').value;
+  const metrica=document.getElementById('explorer-metrica').value;
+  const el=document.getElementById('explorer-result');
+  el.style.display='block';
+  const t=trofeiSq(sqId);
+  const classifSq=DB.classifiche.filter(x=>x.squadra===sqId&&x.punti);
+  const vals={
+    pos1:posCount(sqId,1),pos2:posCount(sqId,2),pos3:posCount(sqId,3),
+    top3:posCount(sqId,1)+posCount(sqId,2)+posCount(sqId,3),
+    pos8:posCount(sqId,8),
+    max_pt:(classifSq.length?Math.max(...classifSq.map(x=>x.punti))+'pt':'nd'),
+    min_pt:(classifSq.length?Math.min(...classifSq.map(x=>x.punti))+'pt':'nd'),
+    media_pt:(classifSq.length?(classifSq.reduce((a,b)=>a+b.punti,0)/classifSq.length).toFixed(1)+'pt':'nd'),
+    tot_trofei:t.totale,coppe_italia:t['Coppa Italia'],supercoppe:t['Supercoppa'],superleghe:t['Superlega']
+  };
+  const lbls={pos1:'volte campione',pos2:'secondi posti',pos3:'terzi posti',top3:'podi totali (top 3)',pos8:'ultimi posti',
+    max_pt:'record punti in una stagione',min_pt:'punti minimi in una stagione',media_pt:'media punti storici',
+    tot_trofei:'trofei totali',coppe_italia:'Coppe Italia vinte',supercoppe:'Supercoppe vinte',superleghe:'Superleghe vinte'};
+  el.innerHTML=`<div style="display:flex;align-items:baseline;gap:16px;">
+    <div class="stat-big">${vals[metrica]}</div>
+    <div><div style="font-size:16px;color:var(--text)">${sqName(sqId)}</div>
+    <div class="stat-desc">${lbls[metrica]}</div></div>
+  </div>`;
+}
+
+function buildPosTable(){
+  const attive=DB.squadre.filter(x=>x.attiva).map(x=>x.id);
+  const pos=[1,2,3,4,5,6,7,8];
+  let html=`<table><tr><th>Squadra</th>${pos.map(p=>`<th style="text-align:center">${p}°</th>`).join('')}<th style="text-align:center">Camp.</th></tr>`;
+  attive.forEach(id=>{
+    const counts=pos.map(p=>posCount(id,p));
+    const tot=DB.classifiche.filter(x=>x.squadra===id).length;
+    html+=`<tr><td><strong>${sqName(id)}</strong></td>
+      ${counts.map((c,i)=>`<td style="text-align:center;${i===0?'color:var(--gold);font-weight:600':i===1?'color:#B8B8B8':i===2?'color:#CD7F32':''}">${c||'—'}</td>`).join('')}
+      <td style="text-align:center;color:var(--text3)">${tot}</td></tr>`;
+  });
+  html+='</table>';
+  document.getElementById('pos-table-container').innerHTML=html;
+}
+
+function buildRecords(){
+  const withPt=DB.classifiche.filter(x=>x.punti);
+  const maxRow=withPt.reduce((a,b)=>b.punti>a.punti?b:a);
+  const wins=DB.classifiche.filter(x=>x.pos===1&&x.punti);
+  const maxWin=wins.reduce((a,b)=>b.punti>a.punti?b:a);
+  const minWin=wins.reduce((a,b)=>b.punti<a.punti?b:a);
+  const minRow=withPt.reduce((a,b)=>b.punti<a.punti?b:a);
+  const records=[
+    {title:'Record punti assoluto',val:maxRow.punti+'pt',sub:sqName(maxRow.squadra)+' · '+maxRow.stagione},
+    {title:'Scudetto con più punti',val:maxWin.punti+'pt',sub:sqName(maxWin.squadra)+' · '+maxWin.stagione},
+    {title:'Scudetto con meno punti',val:minWin.punti+'pt',sub:sqName(minWin.squadra)+' · '+minWin.stagione},
+    {title:'Minimo assoluto',val:minRow.punti+'pt',sub:sqName(minRow.squadra)+' · '+minRow.stagione}
+  ];
+  document.getElementById('records-grid').innerHTML=records.map(r=>`
+    <div class="card">
+      <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">${r.title}</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--gold);line-height:1;">${r.val}</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:6px;">${r.sub}</div>
+    </div>`).join('');
+}
+
+function buildDistChart(){
+  const attive=DB.squadre.filter(x=>x.attiva).map(x=>x.id);
+  const labels=attive.map(id=>sqName(id).split(' ').slice(0,2).join(' '));
+  new Chart(document.getElementById('chartDistPos'),{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'1° posto',data:attive.map(id=>posCount(id,1)),backgroundColor:'#C9A84C',borderRadius:3},
+      {label:'2° posto',data:attive.map(id=>posCount(id,2)),backgroundColor:'#B8B8B8',borderRadius:3},
+      {label:'3° posto',data:attive.map(id=>posCount(id,3)),backgroundColor:'#CD7F32',borderRadius:3},
+      {label:'Ultimo',data:attive.map(id=>posCount(id,8)),backgroundColor:'#3a3a3a',borderRadius:3}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#A8A49A',font:{size:11}}}},
+      scales:{x:{stacked:true,grid:{display:false},ticks:{color:'#5C5A54',font:{size:10}}},
+              y:{stacked:true,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#5C5A54'}}}}
+  });
+}
+
+// ─── CURIOSITA ─────────────────────────────────────────
+function buildCuriosity(){
+  const items=[
+    'SUPER SAYAN, SUPER EAGLES e NEDERLANDSE LEEUWEN sono le uniche squadre che hanno partecipato a <strong>tutti i campionati</strong> del Fantacanis, seguite dalla LONGOBARDA (con una edizione in meno) e dal REAL TORINO (con due edizioni in meno).',
+    'L\'ambito premio di <strong>"squadra più titolata"</strong> è detenuto dai SUPER EAGLES con <strong>21 trofei</strong>, seguiti dai SUPER SAYAN a quota 13 e dal REAL TORINO a quota 10.',
+    'Al 2025/2026 i <strong>NEDERLANDSE LEEUWEN</strong> sono la squadra con più secondi posti: ben <strong>7</strong>.',
+    'La squadra che ha vinto lo scudetto con il <strong>minor numero di punti</strong> (45pt) è il REAL TORINO nella stagione 2023/2024, dopo spareggio contro i NEDERLANDSE LEEUWEN.',
+    'La prima squadra a realizzare il <strong>"Triplete"</strong> (scudetto + coppa Italia + supercoppa) sono i SUPER EAGLES nella stagione 2022/2023, quando hanno vinto anche la Superlega.',
+    'I LOKOMOTIV MOSCONI nella stagione 2025/2026 hanno stabilito il <strong>record per il miglior girone di apertura</strong> (38pt nella Superlega).',
+    'Dal 2013/2014 al 2017/2018 i <strong>SUPER SAYAN</strong> hanno vinto un trofeo ininterrottamente per 5 stagioni consecutive.',
+    'I SUPER EAGLES sono chiamati anche i <strong>"Re di Coppe"</strong>: hanno vinto 13 coppe (8 Coppe Italia e 5 Supercoppe).',
+    'La finale con più reti è la Coppa Italia tra SUPER SAYAN e REAL TORINO: <strong>2-1 all\'andata e 5-5 al ritorno</strong>. La finale più clamorosa è quella del 2021/2022 vinta dal REAL TORINO per <strong>6-1</strong> contro i NEDERLANDSE LEEUWEN.',
+    'Gli spareggi scudetto della storia del Fantacanis sono stati due: SUPER SAYAN vs NEDERLANDSE LEEUWEN nel 2015/2016 (vinta per <strong>2-1</strong>) e REAL TORINO vs NEDERLANDSE LEEUWEN nel 2023/2024 (vinta per <strong>3-1</strong>).'
+  ];
+  document.getElementById('curiosita-list').innerHTML=items.map(t=>`<div class="curiosita-item">${t}</div>`).join('');
+}
+
+// ─── SQUADRE ─────────────────────────────────────────────
+function buildSquadre(){
+  const grid=document.getElementById('squadre-grid-container');
+  const all=[...DB.squadre].sort((a,b)=>{
+    if(a.attiva&&!b.attiva)return -1;if(!a.attiva&&b.attiva)return 1;
+    return trofeiSq(b.id).totale-trofeiSq(a.id).totale;
+  });
+  grid.innerHTML=all.map(sq=>{
+    const t=trofeiSq(sq.id);
+    const initials=sq.nome.split(' ').slice(0,2).map(w=>w[0]).join('');
+    return `<div class="squadra-card" onclick="openSquadModal('${sq.id}')">
+      <div class="squadra-avatar">${initials}</div>
+      <div class="squadra-name">${sq.nome}</div>
+      <div class="squadra-pres"><span class="${sq.attiva?'squadra-active':'squadra-inactive'}"></span>${sq.presidente||'Storica'}</div>
+      <div style="margin-top:12px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
+        ${t['Campionato']?`<span class="badge badge-gold">🏆 ${t['Campionato']}</span>`:''}
+        ${t.totale?`<span class="badge" style="background:rgba(255,255,255,.07);color:var(--text2);">${t.totale} trofei</span>`:'<span style="font-size:11px;color:var(--text3);">Nessun trofeo</span>'}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openSquadModal(id){
+  const sq=DB.squadre.find(x=>x.id===id);
+  const t=trofeiSq(id);
+  const results=DB.classifiche.filter(x=>x.squadra===id).sort((a,b)=>b.stagione.localeCompare(a.stagione));
+  const initials=sq.nome.split(' ').slice(0,2).map(w=>w[0]).join('');
+  const html=`<div style="display:flex;align-items:center;gap:16px;margin-bottom:1.5rem;">
+    <div class="squadra-avatar" style="width:64px;height:64px;font-size:24px;flex-shrink:0;">${initials}</div>
+    <div>
+      <div class="modal-title" style="margin-bottom:4px;">${sq.nome}</div>
+      <div style="font-size:13px;color:var(--text3);">${sq.attiva?'<span style="color:var(--green)">● Attiva</span>':'<span style="color:var(--text3)">● Storica</span>'} ${sq.presidente?'· Pres: '+sq.presidente:''}</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:1.5rem;text-align:center;">
+    <div style="background:var(--bg3);border-radius:8px;padding:12px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold);">${t['Campionato']}</div><div style="font-size:10px;color:var(--text3);letter-spacing:1px;">SCUDETTI</div></div>
+    <div style="background:var(--bg3);border-radius:8px;padding:12px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--blue);">${t['Coppa Italia']}</div><div style="font-size:10px;color:var(--text3);letter-spacing:1px;">COPPE IT.</div></div>
+    <div style="background:var(--bg3);border-radius:8px;padding:12px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--green);">${t['Supercoppa']}</div><div style="font-size:10px;color:var(--text3);letter-spacing:1px;">SUPERC.</div></div>
+    <div style="background:var(--bg3);border-radius:8px;padding:12px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:#9B59B6;">${t['Superlega']}</div><div style="font-size:10px;color:var(--text3);letter-spacing:1px;">SUPERL.</div></div>
+  </div>
+  <div style="margin-bottom:8px;font-size:14px;"><strong>Podi:</strong> <span style="color:var(--gold)">${posCount(id,1)} 🥇</span> &nbsp;·&nbsp; <span style="color:#B8B8B8">${posCount(id,2)} 🥈</span> &nbsp;·&nbsp; <span style="color:#CD7F32">${posCount(id,3)} 🥉</span></div>
+  <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin:1rem 0 8px;">Storico campionati</div>
+  <div class="table-wrap"><table>
+    <tr><th>Stagione</th><th>Pos</th><th>Pt</th></tr>
+    ${results.map(r=>`<tr><td style="color:var(--text3)">${r.stagione}</td><td class="${r.pos===1?'rank rank-1':r.pos===2?'rank rank-2':r.pos===3?'rank rank-3':'rank'}">${r.pos}°</td><td>${r.punti??'nd'}</td></tr>`).join('')}
+  </table></div>`;
+  document.getElementById('modal-body').innerHTML=html;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e){if(e.target.id==='modal-overlay')document.getElementById('modal-overlay').classList.remove('open');}
+
+// ─── INIT ─────────────────────────────────────────────────
+buildHome();
+buildDettaglio();
+buildAlbo();
+buildPalmares();
+buildClassifica();
+buildStatistiche();
+buildCuriosity();
+buildSquadre();
+</script>
+</body>
+</html>
