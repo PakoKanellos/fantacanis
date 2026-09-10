@@ -362,6 +362,42 @@ body.theme-chalk .ls-row{border-bottom-color:rgba(239,245,238,0.06);}
 body.theme-chalk .ls-trophy-row{border-bottom-color:rgba(239,245,238,0.06);}
 body.theme-chalk .ls-pos-1{color:#F0E060;}
 body.theme-chalk .ls-trophy-winner{color:#EFF5EE;}
+/* REGOLAMENTO */
+.reg-section{margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border);}
+.reg-section:last-child{border-bottom:none;}
+.reg-heading{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+.reg-heading::before{content:'';display:inline-block;width:4px;height:24px;background:var(--gold);border-radius:2px;flex-shrink:0;}
+.reg-subheading{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin:1.25rem 0 0.5rem;}
+.reg-p{font-size:14px;line-height:1.8;color:var(--text2);margin-bottom:0.75rem;}
+.reg-p:last-child{margin-bottom:0;}
+.reg-ul,.reg-ol{padding-left:1.25rem;margin-bottom:0.75rem;}
+.reg-ul li,.reg-ol li{font-size:14px;line-height:1.8;color:var(--text2);margin-bottom:4px;}
+.reg-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:0.5rem;}
+.reg-table th{text-align:left;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);padding:8px 10px;border-bottom:1px solid var(--border);}
+.reg-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text2);}
+.reg-table tr:hover td{background:rgba(201,168,76,0.04);}
+.reg-highlight{background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);border-left:3px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1rem 1.25rem;margin:1rem 0;}
+.reg-highlight-title{font-size:12px;font-weight:600;letter-spacing:1px;color:var(--gold);}
+#reg-toc-links a{font-size:12px;color:var(--text3);text-decoration:none;padding:4px 8px;border-radius:4px;transition:all .15s;display:block;}
+#reg-toc-links a:hover,#reg-toc-links a.reg-toc-active{background:rgba(201,168,76,0.1);color:var(--gold);}
+@media(max-width:700px){#page-regolamento .section>div{grid-template-columns:1fr!important;}#reg-toc{display:none;}}
+body.theme-newspaper .reg-heading{color:#1A1510;}
+body.theme-newspaper .reg-heading::before{background:#8B6914;}
+body.theme-newspaper .reg-p{color:#3D2E1F;}
+body.theme-newspaper .reg-ul li,body.theme-newspaper .reg-ol li{color:#3D2E1F;}
+body.theme-newspaper .reg-highlight{background:rgba(139,105,20,0.08);border-color:rgba(139,105,20,0.25);border-left-color:#8B6914;}
+body.theme-newspaper .reg-highlight-title{color:#8B6914;}
+body.theme-newspaper .reg-table th{color:#8B7060;}
+body.theme-newspaper .reg-section{border-bottom-color:#C8B89A;}
+body.theme-stadium .reg-heading{color:#fff;}
+body.theme-stadium .reg-heading::before{background:#00A859;}
+body.theme-stadium .reg-highlight{background:rgba(0,168,89,0.08);border-color:rgba(0,168,89,0.2);border-left-color:#00A859;}
+body.theme-stadium .reg-highlight-title{color:#00A859;}
+body.theme-chalk .reg-heading{font-family:'Permanent Marker',cursive;color:#EFF5EE;}
+body.theme-chalk .reg-heading::before{background:#F0E060;}
+body.theme-chalk .reg-highlight{background:rgba(240,224,96,0.08);border-color:rgba(240,224,96,0.2);border-left-color:#F0E060;}
+body.theme-chalk .reg-highlight-title{color:#F0E060;}
+body.theme-chalk .reg-section{border-bottom:2px dashed rgba(239,245,238,0.12);}
 </style>
 </head>
 <body>
@@ -378,6 +414,7 @@ body.theme-chalk .ls-trophy-winner{color:#EFF5EE;}
       <a href="#" onclick="showPage('statistiche')" id="nav-statistiche">Statistiche</a>
       <a href="#" onclick="showPage('curiosita')" id="nav-curiosita">Curiosità</a>
       <a href="#" onclick="showPage('squadre')" id="nav-squadre">Squadre</a>
+      <a href="#" onclick="showPage('regolamento')" id="nav-regolamento">Regolamento</a>
     </div>
     <div class="theme-picker-wrap">
       <span class="theme-picker-label">🎨</span>
@@ -554,7 +591,204 @@ body.theme-chalk .ls-trophy-winner{color:#EFF5EE;}
   </div>
 </div>
 
-<!-- MODAL SQUADRA -->
+<!-- ======================== REGOLAMENTO ======================== -->
+<div id="page-regolamento" class="page">
+  <div class="section">
+    <div class="section-header"><span class="section-title">Regolamento Ufficiale</span><span class="section-sub">Stagione 2026/2027 · Aggiornato il 2 settembre 2026</span></div>
+
+    <div style="display:grid;grid-template-columns:220px 1fr;gap:2rem;align-items:start;">
+
+      <!-- INDICE -->
+      <div style="position:sticky;top:72px;" id="reg-toc">
+        <div class="card" style="padding:1rem;">
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;">Indice</div>
+          <div id="reg-toc-links" style="display:flex;flex-direction:column;gap:4px;"></div>
+        </div>
+      </div>
+
+      <!-- CONTENUTO -->
+      <div id="reg-content" style="min-width:0;">
+
+        <div class="reg-section" data-title="Introduzione">
+          <div class="reg-heading">Introduzione</div>
+          <p class="reg-p">Questo è il regolamento ufficiale della <strong>"Lega FantaCanis"</strong>: l'intento è quello di raggruppare in un unico punto le regole ufficiali della FantaLega e tutti quegli accorgimenti definiti di stagione in stagione. Salvo diverse comunicazioni, questo diventerà il punto di riferimento per dubbi, controversie regolamentari e quant'altro.</p>
+          <p class="reg-p">L'invito che vi facciamo è quello di leggerlo attentamente e di segnalare eventuali errori o punti del regolamento che non vi sono particolarmente chiari. <strong>Buon Fantacalcio a tutti!</strong></p>
+        </div>
+
+        <div class="reg-section" data-title="Le Squadre">
+          <div class="reg-heading">Le Squadre</div>
+          <p class="reg-p">Le squadre regolarmente iscritte alla FantaLega sono:</p>
+          <table class="reg-table">
+            <tr><td>1</td><td><strong>LONGOBARDA</strong></td><td>Dide</td></tr>
+            <tr><td>2</td><td><strong>SPARTA TARAS</strong></td><td>Fabrizio</td></tr>
+            <tr><td>3</td><td><strong>NEDERLANDSE LEEUWEN</strong></td><td>Ivan (Presidente di Lega)</td></tr>
+            <tr><td>4</td><td><strong>LOKOMOTIV MOSCONI</strong></td><td>Adolfo</td></tr>
+            <tr><td>5</td><td><strong>SUPER SAYAN</strong></td><td>Luca</td></tr>
+            <tr><td>6</td><td><strong>REAL TORINO</strong></td><td>Andrea G. (Vice Presidente di Lega)</td></tr>
+            <tr><td>7</td><td><strong>SUPER EAGLES</strong></td><td>Enrico (Vice Presidente di Lega)</td></tr>
+            <tr><td>8</td><td><strong>SMASHING PUMPKINS</strong></td><td>Andrea B.</td></tr>
+          </table>
+        </div>
+
+        <div class="reg-section" data-title="Le Date">
+          <div class="reg-heading">Le Date</div>
+          <p class="reg-p">La FantaLega vedrà la <strong>prima giornata</strong> in concomitanza con la <strong>4ª giornata di Serie A</strong>.</p>
+          <p class="reg-p">Il calendario della competizione viene consolidato e considerato confermato dai partecipanti, definendo in maniera stabile la struttura delle giornate e degli incontri della stagione. L'obiettivo è garantire maggiore chiarezza nella programmazione e permettere a tutti di conoscere fin dall'inizio il percorso della propria squadra nelle diverse competizioni.</p>
+        </div>
+
+        <div class="reg-section" data-title="Le Rose">
+          <div class="reg-heading">Le Rose</div>
+          <p class="reg-p">La rosa di ciascuna squadra deve essere composta da <strong>minimo 25 e massimo 30 calciatori</strong>, scelti tra quelli appartenenti alle squadre del campionato italiano di Serie A e deve obbligatoriamente essere composta dai seguenti calciatori:</p>
+          <ul class="reg-ul">
+            <li><strong>3 Portieri</strong></li>
+            <li><strong>22–27 Giocatori di movimento</strong></li>
+          </ul>
+          <p class="reg-p">È autorizzato il tesseramento in numero illimitato di calciatori stranieri, senza alcuna distinzione tra comunitari ed extracomunitari. Il terzo portiere potrà essere uno qualsiasi dei portieri delle squadre di Serie A, indipendentemente dal ruolo in squadra.</p>
+          <div class="reg-highlight">
+            <div class="reg-highlight-title">🆕 Draft System — dal 2026/2027</div>
+            <p class="reg-p" style="margin-top:8px;">A partire dalla stagione 2026/2027 viene introdotto un sistema Draft ispirato al modello NBA. La posizione finale in classifica determina un vantaggio nell'asta successiva:</p>
+            <table class="reg-table" style="margin-top:8px;">
+              <tr><th>Posizione</th><th>Bonus</th><th>Budget effettivo</th></tr>
+              <tr><td>1ª – 2ª</td><td>+0</td><td>400 crediti</td></tr>
+              <tr><td>3ª – 4ª</td><td>+5</td><td>405 crediti</td></tr>
+              <tr><td>5ª – 6ª</td><td>+10</td><td>410 crediti</td></tr>
+              <tr><td>7ª – 8ª</td><td>+15</td><td>415 crediti</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="reg-section" data-title="Il Calciomercato">
+          <div class="reg-heading">Il Calciomercato Estivo</div>
+          <div class="reg-subheading">Confermati</div>
+          <p class="reg-p">Prima dell'asta, ogni FantaPresidente dovrà comunicare la lista dei giocatori da confermare. Il numero massimo di giocatori confermabili è <strong>9</strong>, senza distinzione di ruolo. Sono confermabili solo giocatori con almeno un anno di contratto.</p>
+          <div class="reg-subheading">L'Asta Iniziale</div>
+          <p class="reg-p">L'asta iniziale si svolge con il sistema delle <strong>offerte in busta chiusa</strong> tramite l'app ufficiale. Il FantaPresidente con l'offerta più alta si aggiudica il giocatore per un massimo di <strong>3 stagioni</strong>.</p>
+          <div class="reg-highlight">
+            <div class="reg-highlight-title">🆕 Valore base — dal 2026/2027</div>
+            <p class="reg-p" style="margin-top:8px;">Ogni giocatore avrà un valore base determinato automaticamente dall'applicazione ufficiale, che costituirà il punto di partenza delle offerte. La regola non si applica retroattivamente ai giocatori già confermati. In caso di offerte uguali si procede con un ulteriore rilancio tramite app.</p>
+          </div>
+          <p class="reg-p">Al termine del mercato ogni squadra avrà diritto a ulteriori <strong>60 crediti</strong> da spendere nelle sessioni di riparazione.</p>
+          <div class="reg-subheading">Trattative Dirette tra FantaPresidenti</div>
+          <ul class="reg-ul">
+            <li>I crediti non dovranno mai essere esauriti</li>
+            <li>Il numero di giocatori in rosa deve rispettare i limiti previsti</li>
+            <li>Non esiste limite al numero di giocatori vendibili o scambiabili</li>
+            <li>L'accordo raggiunto deve essere comunicato dalla Presidenza nel canale WhatsApp ufficiale</li>
+            <li>Un giocatore scambiato non può essere ritesserato dalla squadra di provenienza fino a fine stagione</li>
+          </ul>
+          <div class="reg-subheading">Mercati di Riparazione</div>
+          <p class="reg-p">Il mercato di riparazione è diviso in <strong>3 sessioni</strong>, con finestre al termine della 7ª, 14ª e 21ª giornata di campionato.</p>
+        </div>
+
+        <div class="reg-section" data-title="Le Competizioni">
+          <div class="reg-heading">Le Competizioni Ufficiali</div>
+          <p class="reg-p">La Lega Fantacanis è composta da <strong>4 competizioni</strong>:</p>
+          <ul class="reg-ul">
+            <li>Il Campionato</li>
+            <li>La Coppa di Lega</li>
+            <li>La Supercoppa di Lega</li>
+            <li>La SuperLega</li>
+          </ul>
+        </div>
+
+        <div class="reg-section" data-title="Il Campionato">
+          <div class="reg-heading">Il Campionato</div>
+          <p class="reg-p">La classifica è stabilita per punteggio: <strong>3 punti</strong> per la vittoria, <strong>1 punto</strong> per il pareggio, <strong>0 punti</strong> per la sconfitta. La squadra prima classificata è Campione di Lega e conquista il <strong>Fantascudetto</strong> — solo lei potrà esibire lo scudetto sulla maglia nella stagione successiva.</p>
+          <div class="reg-subheading">Parità tra due squadre</div>
+          <ol class="reg-ol">
+            <li>Spareggio in gara unica in campo neutro</li>
+            <li>In caso di parità dopo i 90': tempi supplementari</li>
+            <li>In caso di ulteriore parità: calci di rigore</li>
+            <li>In caso di ulteriore parità: media dei Totali-Squadra nel campionato</li>
+            <li>In caso di ulteriore parità: sorteggio (lancio della monetina)</li>
+          </ol>
+          <div class="reg-subheading">Parità tra tre o più squadre</div>
+          <p class="reg-p">Si compila una <strong>classifica avulsa</strong> tenendo conto di: Media-Totale Squadra, poi punti negli scontri diretti, poi differenza reti negli scontri diretti. Le prime due della classifica avulsa si affrontano in spareggio.</p>
+        </div>
+
+        <div class="reg-section" data-title="La Coppa di Lega">
+          <div class="reg-heading">La Coppa di Lega</div>
+          <p class="reg-p">Dal 2025/2026 il formato è a <strong>gara secca</strong>: tutte le partite, dai gironi alla finale, si disputano in gara unica e in campo neutro. Le 8 squadre sono divise in due gironi da 4 tramite sorteggio. Le prime 2 di ogni girone accedono alle semifinali, poi si disputa la finale.</p>
+          <p class="reg-p">In caso di parità ai 90': tempi supplementari, poi eventualmente calci di rigore.</p>
+        </div>
+
+        <div class="reg-section" data-title="La Supercoppa">
+          <div class="reg-heading">La Supercoppa</div>
+          <p class="reg-p">Gara unica in campo neutro tra il vincitore del Campionato e il vincitore della Coppa di Lega. Se la stessa squadra vince entrambe le competizioni, la Supercoppa si disputa contro la finalista di Coppa di Lega.</p>
+        </div>
+
+        <div class="reg-section" data-title="La SuperLega">
+          <div class="reg-heading">La SuperLega</div>
+          <p class="reg-p">La SuperLega si basa sulla somma dei punti nei primi due gironi (<strong>"Apertura"</strong>) e negli ultimi due gironi (<strong>"Clausura"</strong>). Se le vincitrici di Apertura e Clausura sono diverse, si disputa una <strong>finale in gara unica</strong> in campo neutro.</p>
+        </div>
+
+        <div class="reg-section" data-title="La Formazione">
+          <div class="reg-heading">La Formazione</div>
+          <p class="reg-p">Ogni giornata ciascuna squadra deve schierare una squadra valida tramite l'app ufficiale entro i termini stabiliti.</p>
+          <div class="reg-subheading">Mancata comunicazione</div>
+          <p class="reg-p">In caso di mancata comunicazione, è valida la formazione della settimana precedente. Alla <strong>prima giornata</strong>, la mancata comunicazione comporta la sconfitta per <strong>3-0 a tavolino</strong>.</p>
+          <div class="reg-subheading">La Riserva d'Ufficio</div>
+          <p class="reg-p">La riserva d'ufficio per un calciatore di movimento vale <strong>4 punti</strong> e viene applicata a un solo calciatore per squadra. Per il portiere assente la riserva d'ufficio vale <strong>3 punti</strong> ed è sempre prioritaria. Nessuna squadra può giocare senza portiere.</p>
+        </div>
+
+        <div class="reg-section" data-title="App e Voti">
+          <div class="reg-heading">App e Sito Ufficiale</div>
+          <p class="reg-p">L'app ufficiale è <strong>fantacalcio.it</strong>. La fonte voti ufficiale è la <strong>"Redazione Italia"</strong> di fantacalcio.it.</p>
+          <div class="reg-highlight">
+            <div class="reg-highlight-title">🆕 Bonus Assist — dal 2025/2026</div>
+            <p class="reg-p" style="margin-top:8px;">Il bonus <strong>+1</strong> è assegnato esclusivamente agli assist classificati come <strong>"Gold"</strong> e <strong>"Standard"</strong>. Gli assist <strong>"Soft"</strong> non danno diritto ad alcun bonus.</p>
+          </div>
+        </div>
+
+        <div class="reg-section" data-title="Tabella di Conversione">
+          <div class="reg-heading">Tabella di Conversione</div>
+          <p class="reg-p">Trasforma il Totale-Squadra in gol secondo questo schema:</p>
+          <table class="reg-table">
+            <tr><th>Totale-Squadra</th><th>Gol</th></tr>
+            <tr><td>Meno di 66 punti</td><td>0 gol</td></tr>
+            <tr><td>Da 66 a 71,999</td><td>1 gol</td></tr>
+            <tr><td>Da 72 a 76,999</td><td>2 gol</td></tr>
+            <tr><td>Da 77 a 80,999</td><td>3 gol</td></tr>
+            <tr><td>Da 81 a 84,999</td><td>4 gol</td></tr>
+            <tr><td>Da 85 a 88,999</td><td>5 gol</td></tr>
+            <tr><td>Da 89 in poi</td><td>+1 gol ogni 4 punti</td></tr>
+          </table>
+          <div class="reg-subheading" style="margin-top:1.5rem;">Tabella Supplementari</div>
+          <table class="reg-table">
+            <tr><th>Totale-Supplementari</th><th>Gol</th></tr>
+            <tr><td>Meno di 20 punti</td><td>0 gol</td></tr>
+            <tr><td>Da 20 a 23,999</td><td>1 gol</td></tr>
+            <tr><td>Da 24 in poi</td><td>+1 gol ogni 4 punti</td></tr>
+          </table>
+          <p class="reg-p" style="margin-top:12px;">Nei supplementari è assegnato uno <strong>0,5 di fattore campo</strong> alla squadra di casa, da sommare al Totale-Supplementari.</p>
+        </div>
+
+        <div class="reg-section" data-title="Calci di Rigore">
+          <div class="reg-heading">Calci di Rigore</div>
+          <p class="reg-p">In caso di parità dopo i supplementari si effettuano i calci di rigore. Ogni allenatore deve indicare l'ordine dei rigoristi (da 1 a 18) tra i calciatori schierati, con i portieri obbligatoriamente dal numero <strong>11 in su</strong>.</p>
+          <ul class="reg-ul">
+            <li>Si tirano obbligatoriamente <strong>5 calci di rigore</strong></li>
+            <li>Segna chi ottiene un voto <strong>≥ 6</strong>, sbaglia chi ottiene <strong>&lt; 6</strong></li>
+            <li>In caso di ulteriore parità: rigori ad oltranza con i restanti 13 calciatori</li>
+            <li>In caso di mancata comunicazione: lista d'ufficio con la formazione titolare rovesciata</li>
+            <li>Parità finale: media dei Totali-Squadra, poi sorteggio</li>
+          </ul>
+        </div>
+
+        <div class="reg-section" data-title="Casi Particolari">
+          <div class="reg-heading">Partite Sospese e Casi Particolari</div>
+          <div class="reg-subheading">Partite sospese o rinviate</div>
+          <p class="reg-p">Le formazioni vengono "congelate" in attesa dei recuperi. Non è possibile modificare le formazioni congelate. I recuperi devono essere disputati prima della fine del FantaCampionato, altrimenti si calcola con <strong>6 politico</strong> a tutti i calciatori coinvolti.</p>
+          <div class="reg-subheading">Partite decise a tavolino</div>
+          <p class="reg-p">Si tengono in considerazione i voti assegnati dall'app e il risultato ottenuto sul campo. Se i Quotidiani Ufficiali non assegnano i voti, si assegna d'ufficio un <strong>6 a tutti i calciatori</strong> che hanno giocato almeno 30 minuti.</p>
+          <div class="reg-subheading">Partite non omologate e rigiocate</div>
+          <p class="reg-p">I voti della partita originale vengono annullati. Si prendono in considerazione i voti della partita rigiocata.</p>
+        </div>
+
+      </div><!-- fine reg-content -->
+    </div><!-- fine grid -->
+  </div>
+</div>
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal" id="modal-content">
     <button class="modal-close" onclick="document.getElementById('modal-overlay').classList.remove('open')">✕</button>
@@ -1171,6 +1405,27 @@ function updateChartColors(t){
   });
 }
 
+// ─── REGOLAMENTO ─────────────────────────────────────────
+function buildRegolamento(){
+  // Costruisce l'indice laterale automaticamente dalle sezioni
+  const sections=document.querySelectorAll('#page-regolamento .reg-section');
+  const toc=document.getElementById('reg-toc-links');
+  if(!toc)return;
+  sections.forEach((sec,i)=>{
+    const title=sec.dataset.title||'Sezione '+(i+1);
+    const id='reg-sec-'+i;
+    sec.id=id;
+    const a=document.createElement('a');
+    a.href='#';
+    a.textContent=title;
+    a.onclick=(e)=>{
+      e.preventDefault();
+      sec.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+    toc.appendChild(a);
+  });
+}
+
 // ─── INIT ─────────────────────────────────────────────────
 buildHome();
 buildDettaglio();
@@ -1180,6 +1435,7 @@ buildClassifica();
 buildStatistiche();
 buildCuriosity();
 buildSquadre();
+buildRegolamento();
 // ripristina tema salvato
 try{const saved=localStorage.getItem('fc-theme');if(saved&&saved!=='dark'){document.getElementById('theme-select').value=saved;applyTheme(saved);}}catch(e){}
 </script>
